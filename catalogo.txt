@@ -1,0 +1,10 @@
+create database catalogo;
+use catalogo;
+
+create table producto ( id_producto int primary key, nombre varchar(100), cantidad int, ppu numeric(5,2));
+
+insert into producto values (1, 'Bolígrafo', 70, 0.50);
+insert into producto values (2, 'Papel', 40, 0.05);
+insert into producto values (3, 'Goma', 100, 0.20);
+insert into producto values (4, 'Fotocopias', 100, 0.05);
+insert into producto values (5, 'Mochila', 10, 15);
