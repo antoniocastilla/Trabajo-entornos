@@ -2,11 +2,13 @@
 package trabajo.entornos;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MySQL {
     
     static final String DDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static String DB_URL = "jdbc:mysql://localhost/";
+    static String DB_URL = "jdbc:mysql://localhost/libreriaEntornos";
     // Database credentials
     static String USER = "pepe";
     static String PASS = "pepa";
@@ -20,15 +22,15 @@ public class MySQL {
 
     }
 
-    public static void conecta(String user, String pass, String db) {
+    public static void conecta(String user, String pass) {
         try {
 
             Class.forName("com.mysql.jdbc.Driver");
             Class.forName(DDBC_DRIVER);
-            conex = DriverManager.getConnection(DB_URL + db, user, pass);
+            conex = DriverManager.getConnection(DB_URL, user, pass);
             stmt = conex.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
+            
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
@@ -235,12 +237,15 @@ public class MySQL {
 
     }
 
-    public static Object[][] getDatos() {
+    public static Object[][] getDatos(String sql) {
 
         Object[][] datos = null;
         int nFila = 0;
 
         try {
+            
+            rs = stmt.executeQuery(sql);
+            meta = rs.getMetaData();
             rs.last();
             int cuantasFilas = rs.getRow();
             rs.beforeFirst();
@@ -331,6 +336,33 @@ public class MySQL {
 
     public static ResultSetMetaData getMeta() {
         return meta;
+    }
+    
+    public static String[] dameCategorias(){
+        
+        String[] categorias = null;
+        
+        try {
+            
+            ResultSet rs2 = stmt.executeQuery("select * from categoria;");
+            ResultSetMetaData meta2 = rs2.getMetaData();
+            rs2.last();
+            categorias = new String[meta2.getColumnCount()+1];
+            categorias[0]="Todas";
+            
+            rs2.beforeFirst();
+            int i=1;
+            while (rs2.next()){
+                categorias[i] = rs2.getObject("nombre").toString();
+                System.out.println(categorias[i]);
+            }
+                
+            
+        } catch (SQLException ex) {
+            System.out.println("Error obteniendo Categorias: "+ex);
+        }
+        
+        return categorias;
     }
     
     

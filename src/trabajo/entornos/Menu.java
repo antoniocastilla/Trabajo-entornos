@@ -15,8 +15,24 @@ public class Menu extends javax.swing.JFrame {
      * Creates new form Menu
      */
     public Menu() {
-        initComponents();
+        
         this.setTitle("Papelería - Menu principal");
+        MySQL.conecta("pepe", "pepa");
+        initComponents();
+        //MySQL.ejecutaConsulta("select idProducto as Codigo,nombre,cantidad"
+           //     + "ppu,categoria  from producto;");
+        
+                
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                MySQL.cierra();
+                System.exit(0);
+            }
+        });
+        
+        
+
+    
     }
 
     /**
