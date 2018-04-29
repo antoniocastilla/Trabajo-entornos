@@ -1,8 +1,12 @@
 package trabajo.entornos;
 
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,14 +16,16 @@ public class Catalogo extends JDialog {
     private JButton compra, quitar, carrito, volver;
     private MySQL db;
     private JTable jTabla1;
-    private JScrollPane jScrollPanel1,jScrollPanel2;
+    private JScrollPane jScrollPanel1, jScrollPanel2;
     private JPanel pnCarrito;
     private DefaultTableModel modelo;
+    private ArrayList alCarrito;
 
     public Catalogo() {
 
         this.setLayout(null);
 
+        alCarrito = new ArrayList();
         jt1 = new JTextArea();
         jt1.setEditable(false);
         compra = new JButton("Compra");
@@ -29,7 +35,7 @@ public class Catalogo extends JDialog {
         jTabla1 = new javax.swing.JTable();
         jScrollPanel1 = new javax.swing.JScrollPane(jTabla1);
         pnCarrito = new JPanel();
-        pnCarrito.setLayout(new GridLayout(0, 4));
+        pnCarrito.setLayout(new GridLayout(0, 4,10,10));
         jScrollPanel2 = new JScrollPane(pnCarrito);
 
         jScrollPanel1.setBounds(30, 50, 600, 450);
@@ -47,12 +53,49 @@ public class Catalogo extends JDialog {
         this.add(jScrollPanel2);
 
         rellenaTabla();
+        
+        //Panel del Carrito
+        JLabel lbProducto = new JLabel("Producto");
+        JLabel lbUnid = new JLabel("Unidades");
+        JLabel lbDinero = new JLabel("Dinero");
+        JLabel lbVacio = new JLabel("");
+        alCarrito.add(lbProducto);
+        alCarrito.add(lbUnid);
+        alCarrito.add(lbDinero);
+        alCarrito.add(lbVacio);
+        
+        for (Object x:alCarrito)
+            pnCarrito.add((JLabel)x);
+        
+        for (int i = 0; i < 400; i++) {
+            JLabel aux = new JLabel ("xdd");
+            pnCarrito.add(aux);
+        }
+        
 
         volver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Catalogo.this.setVisible(false);
 
+            }
+        });
+
+        jTabla1.addMouseListener(new MouseAdapter() {
+
+            public void mousePressed(MouseEvent mouseEvent) {
+                
+                String[] productoAux = new String[jTabla1.getColumnCount()];
+                int row = jTabla1.rowAtPoint(mouseEvent.getPoint());
+                int col = jTabla1.columnAtPoint(mouseEvent.getPoint());
+                if (row >= 0 && col >= 0) {
+                    for (int i = 0; i < jTabla1.getColumnCount(); i++) {
+                        productoAux[i]=jTabla1.getModel().getValueAt(row, i).toString();
+                    }
+                    
+                }
+                
+                meteCarrito(productoAux);
             }
         });
 
@@ -80,24 +123,31 @@ public class Catalogo extends JDialog {
         }
 
         JComboBox<String> cbCategorias = new JComboBox<String>();
-        for (String x:MySQL.dameCategorias())
+        for (String x : MySQL.dameCategorias()) {
             cbCategorias.addItem(x);
-        
-        
-        modelo = new DefaultTableModel(datos, cabecera){
+        }
+
+        modelo = new DefaultTableModel(datos, cabecera) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 //all cells false
                 return false;
             }
         };
-        
+
         jTabla1.setModel(modelo);
         //jTabla1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(cbCategorias));
         //jTabla1.getModel().addTableModelListener(eventomodelo);
         //clases = MySQL.getClases(tabla);
 
-        MySQL.cierra();
+        //MySQL.cierra();
+    }
+    
+    private void meteCarrito(String[] nuevoProducto){
+        alCarrito.add(nuevoProducto);
+        
+        
+        
     }
 
 }
