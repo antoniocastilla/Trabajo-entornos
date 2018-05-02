@@ -136,6 +136,10 @@ public class Catalogo extends JDialog {
         };
 
         jTabla1.setModel(modelo);
+        
+        //Hay que crear clase Producto + Su contenedor y pasar los datos del
+        //JTabla1 a esa clase cada vez que se actualice el JTable.
+        
         //jTabla1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(cbCategorias));
         //jTabla1.getModel().addTableModelListener(eventomodelo);
         //clases = MySQL.getClases(tabla);
