@@ -96,7 +96,7 @@ public class Catalogo extends JDialog {
         volver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                this.setVisible(false);
+                Catalogo.this.setVisible(false);
 
             }
         });
