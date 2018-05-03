@@ -9,12 +9,12 @@ package trabajo.entornos;
  *
  * @author prg
  */
-public class Menu extends javax.swing.JFrame {
+public class Inicio extends javax.swing.JFrame {
 
     /**
-     * Creates new form Menu
+     * Creates new form Inicio
      */
-    public Menu() {
+    public Inicio() {
         
         this.setTitle("Papelería - Menu principal");
         MySQL.conecta("pepe", "pepa");

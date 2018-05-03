@@ -64,7 +64,7 @@ public class Catalogo extends JDialog {
         compra.setBounds(20, 600, 100, 40);
         quitar.setBounds(120, 600, 100, 40);
         volver.setBounds(220, 600, 100, 40);
-        total.setBounds(320,600,100,40);
+        total.setBounds(650,600,100,40);
 
         this.add(compra);
         this.add(quitar);
@@ -85,11 +85,11 @@ public class Catalogo extends JDialog {
         pnCarrito.add(lbUnid);
         pnCarrito.add(lbDinero);
 
-        lbProducto.setBounds(x1, y1, 80, 20);
+        lbProducto.setBounds(x1-10, y1, 80, 20);
         x1 += aumentoX1;
-        lbUnid.setBounds(x1 + 50, y1, 80, 20);
+        lbUnid.setBounds(x1 + 80, y1, 80, 20);
         x1 += aumentoX1;
-        lbDinero.setBounds(x1 + 50, y1, 80, 20);
+        lbDinero.setBounds(x1 + 80, y1, 80, 20);
         x1 = x0;
         y1 += aumentoY;
 
@@ -130,18 +130,18 @@ public class Catalogo extends JDialog {
                     carro.get(posicionAuxCarro).setUnidades(carro.get(posicionAuxCarro).getUnidades() + 1);
 
                     if (carro.get(posicionAuxCarro).getNombre().compareToIgnoreCase(alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].getText()) == 0) {
-                        System.out.println(carro.get(posicionAuxCarro).getNombre() + " es igual a == " + alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].getText());
+//                        System.out.println(carro.get(posicionAuxCarro).getNombre() + " es igual a == " + alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].getText());
 
                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText(String.valueOf(carro.get(posicionAuxCarro).getUnidades()));
-                        alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText(String.valueOf(carro.get(posicionAuxCarro).getUnidades() * carro.get(posicionAuxCarro).getPpu()));
+                        alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText(String.valueOf(dameTruncado((carro.get(posicionAuxCarro).getUnidades() * carro.get(posicionAuxCarro).getPpu()))));
                         double ppuAux = carro.get(posicionAuxCarro).getPpu();
-                        total.setText("Total: " + String.valueOf(Double.valueOf(total.getText().substring(6)) + ppuAux));
+                        total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) + ppuAux)));
 
                     }
 
                 } else {
                     JLabel[] labels = new JLabel[3];
-                    System.out.println("ha entrao");
+//                    System.out.println("ha entrao");
                     meteCarrito(productoAux);
                     JLabel jlAux = new JLabel(carro.get(carro.size() - 1).getNombre());
                     pnCarrito.add(jlAux);
@@ -151,13 +151,13 @@ public class Catalogo extends JDialog {
 
                     JLabel jlAux1 = new JLabel(String.valueOf(carro.get(carro.size() - 1).getUnidades()));
                     pnCarrito.add(jlAux1);
-                    jlAux1.setBounds(x1 + 40, y1, 80, 20);
+                    jlAux1.setBounds(x1 + 90, y1, 80, 20);
                     x1 += aumentoX1;
                     labels[1] = jlAux1;
 
-                    JLabel jlAux2 = new JLabel(String.valueOf(carro.get(carro.size() - 1).getPpu() * carro.get(carro.size() - 1).getUnidades()));
+                    JLabel jlAux2 = new JLabel(String.valueOf(dameTruncado(carro.get(carro.size() - 1).getPpu() * carro.get(carro.size() - 1).getUnidades())));
                     pnCarrito.add(jlAux2);
-                    jlAux2.setBounds(x1 + 40, y1, 80, 20);
+                    jlAux2.setBounds(x1 + 60, y1, 80, 20);
                     y1 += aumentoY;
                     labels[2] = jlAux2;
                     alEtiquetas.add(labels);
@@ -167,7 +167,7 @@ public class Catalogo extends JDialog {
                     x1 = x0;
 
                     double auxD = carro.get(carro.size() - 1).getPpu();
-                    total.setText("Total: " + String.valueOf(Double.valueOf(total.getText().substring(6)) + auxD));
+                    total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) + auxD)));
                     //total.setBounds(x0, y1 + 30, 200, 20);
                     aumentaTamañoCarrito();
                 }
@@ -241,14 +241,14 @@ public class Catalogo extends JDialog {
     }
 
     private void aumentaTamañoCarrito() {
-        altoSizeCarrito += 40;
+        altoSizeCarrito += 30;
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
         pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
     }
     
-    private void actualizaTotal (double totalSinTruncar){
-        double truncado = (double) Math.round(totalSinTruncar * 100d) / 100d;
-        total.setText(String.valueOf(truncado));
+    private double dameTruncado (double totalSinTruncar){
+        return (double) Math.round(totalSinTruncar * 100d) / 100d;
+        
     }
 
 }
