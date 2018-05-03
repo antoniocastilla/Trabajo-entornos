@@ -7,13 +7,27 @@ public class Producto {
     private String nombre;
     private int unidades;
     private double ppu;
+    private int filaCarrito;
 
-    public Producto(String nombre, int unidades, double ppu) {
+    public Producto(int id, String nombre, int unidades, double ppu) {
+        this.id = id;
         this.nombre = nombre;
         this.unidades = unidades;
         this.ppu = ppu;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String toString(){
+        return "ID: "+id+"\tNombre: "+nombre+"\t Unidades: "+unidades+"\tPPU: "+ppu;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -36,6 +50,14 @@ public class Producto {
 
     public void setPpu(double ppu) {
         this.ppu = ppu;
+    }
+
+    public int getFilaCarrito() {
+        return filaCarrito;
+    }
+
+    public void setFilaCarrito(int filaCarrito) {
+        this.filaCarrito = filaCarrito;
     }
     
 }

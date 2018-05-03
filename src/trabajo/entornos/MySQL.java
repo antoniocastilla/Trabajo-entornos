@@ -354,7 +354,7 @@ public class MySQL {
             int i=1;
             while (rs2.next()){
                 categorias[i] = rs2.getObject("nombre").toString();
-                System.out.println(categorias[i]);
+                //System.out.println(categorias[i]);
             }
                 
             
