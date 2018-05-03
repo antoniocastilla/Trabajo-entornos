@@ -3,6 +3,7 @@ package trabajo.entornos;
 
 
 public class Producto {
+    private int id;
     private String nombre;
     private int unidades;
     private double ppu;

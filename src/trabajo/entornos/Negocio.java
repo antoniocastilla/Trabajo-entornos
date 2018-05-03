@@ -10,5 +10,5 @@ package trabajo.entornos;
  * @author prg
  */
 public class Negocio {
-    
+
 }
