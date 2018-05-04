@@ -5,34 +5,45 @@
  */
 package trabajo.entornos;
 
+import java.awt.Color;
+import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author prg
  */
-public class Inicio extends javax.swing.JFrame {
+public class Menu extends javax.swing.JFrame {
 
     /**
      * Creates new form Inicio
      */
-    public Inicio() {
-        
+    public Menu() {
+
         this.setTitle("Papelería - Menu principal");
         MySQL.conecta("pepe", "pepa");
         initComponents();
-        //MySQL.ejecutaConsulta("select idProducto as Codigo,nombre,cantidad"
-           //     + "ppu,categoria  from producto;");
         
-                
+        try {
+            btCatalogo.setBackground(Color.white);
+            btCatalogo.setText("xd");
+            Image img = ImageIO.read(getClass().getResource("iconos/catalogo.png"));
+            btCatalogo.setIcon(new ImageIcon(img));
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        //MySQL.ejecutaConsulta("select idProducto as Codigo,nombre,cantidad"
+        //     + "ppu,categoria  from producto;");
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 MySQL.cierra();
                 System.exit(0);
             }
         });
-        
-        
 
-    
     }
 
     /**
@@ -45,21 +56,23 @@ public class Inicio extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btCatalogo = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 102, 204));
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("Seleccione una opción:");
 
-        jButton1.setText("Catálogo");
-        jButton1.setToolTipText("Abrir catálogo");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btCatalogo.setBackground(new java.awt.Color(255, 255, 255));
+        btCatalogo.setForeground(new java.awt.Color(255, 255, 255));
+        btCatalogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/catalogo.png"))); // NOI18N
+        btCatalogo.setToolTipText("Abrir catálogo");
+        btCatalogo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btCatalogoActionPerformed(evt);
             }
         });
 
@@ -90,37 +103,44 @@ public class Inicio extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(93, 93, 93)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jButton2)))
+                .addGap(86, 86, 86)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCatalogoActionPerformed
         new Catalogo();
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_btCatalogoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -170,7 +190,7 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btCatalogo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
