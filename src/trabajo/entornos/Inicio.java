@@ -120,6 +120,7 @@ public class Inicio extends javax.swing.JFrame {
         lbCerrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbCerrar.setForeground(new java.awt.Color(255, 255, 255));
         lbCerrar.setText("x");
+        lbCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lbCerrarMousePressed(evt);
@@ -133,6 +134,7 @@ public class Inicio extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("--");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -140,10 +142,10 @@ public class Inicio extends javax.swing.JFrame {
         });
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 20, -1));
 
-        FrameDrag.setBackground(new java.awt.Color(51, 51, 51));
+        FrameDrag.setBackground(new java.awt.Color(204, 0, 204));
         FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         FrameDrag.setForeground(new java.awt.Color(255, 255, 255));
-        FrameDrag.setText("Librería Zaidín Vergeles");
+        FrameDrag.setText("  Librería Zaidín Vergeles");
         FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 FrameDragMouseDragged(evt);
@@ -154,7 +156,7 @@ public class Inicio extends javax.swing.JFrame {
                 FrameDragMousePressed(evt);
             }
         });
-        jPanel1.add(FrameDrag, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 690, 30));
+        jPanel1.add(FrameDrag, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 620));
 
