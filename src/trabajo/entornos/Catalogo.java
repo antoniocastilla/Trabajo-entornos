@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class Catalogo extends JDialog {
+    ///
 
     private JTextArea jt1;
     private JButton compra, quitar, carrito, volver;
