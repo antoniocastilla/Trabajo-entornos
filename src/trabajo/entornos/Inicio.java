@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.Image;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class Inicio extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Inicio
-     */
+    int xMouse;
+    int yMouse;
+    
     public Inicio() {
 
         initComponents();
@@ -25,6 +26,8 @@ public class Inicio extends javax.swing.JFrame {
                 System.exit(0);
             }
         });
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 
@@ -43,11 +46,18 @@ public class Inicio extends javax.swing.JFrame {
         btStock = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        lbCerrar = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        FrameDrag = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Librería");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btCatalogo.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
@@ -64,10 +74,18 @@ public class Inicio extends javax.swing.JFrame {
                 btCatalogoActionPerformed(evt);
             }
         });
-        jPanel1.add(btCatalogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 88, 260, 220));
+        jPanel1.add(btCatalogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 260, 220));
 
-        jButton2.setText("jButton1");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 358, 135, 76));
+        jButton2.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/historial.png"))); // NOI18N
+        jButton2.setText("Historial de Compras");
+        jButton2.setBorder(null);
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 330, 250, 210));
 
         btStock.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         btStock.setForeground(new java.awt.Color(255, 255, 255));
@@ -83,15 +101,62 @@ public class Inicio extends javax.swing.JFrame {
                 btStockActionPerformed(evt);
             }
         });
-        jPanel1.add(btStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(388, 71, 205, -1));
+        jPanel1.add(btStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 205, -1));
 
-        jButton3.setText("jButton1");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, 160, 80));
+        jButton3.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/fondos.png"))); // NOI18N
+        jButton3.setText("Fondos");
+        jButton3.setBorder(null);
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 240, 220));
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 306, 23));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 300, 170, 23));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 540));
+        lbCerrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbCerrar.setForeground(new java.awt.Color(255, 255, 255));
+        lbCerrar.setText("x");
+        lbCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lbCerrarMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbCerrarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(lbCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 0, 20, -1));
+
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("--");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 20, -1));
+
+        FrameDrag.setBackground(new java.awt.Color(51, 51, 51));
+        FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        FrameDrag.setForeground(new java.awt.Color(255, 255, 255));
+        FrameDrag.setText("Librería Zaidín Vergeles");
+        FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragMouseDragged(evt);
+            }
+        });
+        FrameDrag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragMousePressed(evt);
+            }
+        });
+        jPanel1.add(FrameDrag, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 690, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -103,7 +168,35 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStockActionPerformed
         // TODO add your handling code here:
+        new RegistroProducto1();
     }//GEN-LAST:event_btStockActionPerformed
+
+    private void FrameDragMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_FrameDragMouseDragged
+
+    private void FrameDragMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragMousePressed
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_FrameDragMousePressed
+
+    private void lbCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCerrarMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_lbCerrarMouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        this.setExtendedState(ICONIFIED);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void lbCerrarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCerrarMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lbCerrarMousePressed
 
     /**
      * @param args the command line arguments
@@ -144,11 +237,14 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel FrameDrag;
     private javax.swing.JButton btCatalogo;
     private javax.swing.JButton btStock;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbCerrar;
     // End of variables declaration//GEN-END:variables
 }
