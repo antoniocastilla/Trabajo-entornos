@@ -7,8 +7,13 @@ public class Producto {
     private String nombre;
     private int unidades;
     private double ppu;
+    private String categoria;
     private int filaCarrito;
 
+    public Producto (){
+        
+    }
+    
     public Producto(int id, String nombre, int unidades, double ppu) {
         this.id = id;
         this.nombre = nombre;
@@ -16,6 +21,18 @@ public class Producto {
         this.ppu = ppu;
     }
 
+    
+    
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    
+    
     public int getId() {
         return id;
     }

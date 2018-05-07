@@ -165,6 +165,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btCatalogoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCatalogoActionPerformed
         // TODO add your handling code here:
+        //new Catalogo2(this,true);
         new Catalogo();
     }//GEN-LAST:event_btCatalogoActionPerformed
 

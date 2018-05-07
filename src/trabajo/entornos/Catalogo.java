@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javafx.scene.paint.Color;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,17 +16,17 @@ public class Catalogo extends JDialog {
     
 
     private JTextArea jt1;
-    private JButton compra, quitar, carrito, volver;
+    private JButton compra, carrito, volver;
     private MySQL db;
     private JTable jTabla1;
     private JScrollPane jScrollPanel1, jScrollPanel2;
-    private JPanel pnCarrito, pnCompleto;
+    private JPanel pnCarrito,pnCompleto;
     private DefaultTableModel modelo;
     private ArrayList<JLabel[]> alEtiquetas;
     private ArrayList<Producto> carro;
     private int x0 = 10;
     private int x1 = 20;
-    private int y0 = 10;
+    private int y0 = 20;
     private int y1 = 20;
     private int aumentoX1 = 75;
     private int aumentoX2 = 110;
@@ -35,53 +34,56 @@ public class Catalogo extends JDialog {
     //private JLabel[] labels;
     private JLabel total;
     private int altoSizeCarrito = 170;
+    private ArrayList<Integer> posiciones;
 
     public Catalogo() {
 
         this.setLayout(null);
+
 
         //Instancias
         pnCompleto = new JPanel();
         alEtiquetas = new ArrayList<JLabel[]>();
         jt1 = new JTextArea();
         compra = new JButton("Compra");
-        quitar = new JButton("Quitar Producto");
         carrito = new JButton("Ver carrito");
         volver = new JButton("Volver");
         jTabla1 = new javax.swing.JTable();
         jScrollPanel1 = new javax.swing.JScrollPane(jTabla1);
         pnCarrito = new JPanel();
         JPanel xapu = new JPanel();
+        
+        
         jScrollPanel2 = new JScrollPane(xapu, 20, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         carro = new ArrayList<Producto>();
+        //labels = new JLabel[3];
         total = new JLabel("Total: 0");
-        
+        posiciones = new ArrayList<Integer>();
+
+
         //Ajustes
         jt1.setEditable(false);
+        pnCompleto.setBackground(new java.awt.Color(102, 102, 102));
         pnCompleto.setLayout(null);
         pnCarrito.setLayout(null);
         pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
-        pnCompleto.setBackground(new java.awt.Color(102, 102, 102));
         xapu.setLayout(new BorderLayout());
         jScrollPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jScrollPanel2.setBackground(new java.awt.Color(102, 102, 102));
         pnCarrito.setBackground(new java.awt.Color(102, 102, 102));
-        
-        
+
         //Bounds
         pnCompleto.setBounds(0, 0, 1000, 700);
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
         compra.setBounds(20, 600, 100, 40);
-        quitar.setBounds(120, 600, 100, 40);
-        volver.setBounds(220, 600, 100, 40);
+        volver.setBounds(120, 600, 100, 40);
         total.setBounds(650,600,100,40);
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
-
         
+
         this.add(pnCompleto);
         pnCompleto.add(compra);
-        pnCompleto.add(quitar);
         pnCompleto.add(carrito);
         pnCompleto.add(volver);
         pnCompleto.add(jScrollPanel1);
@@ -106,8 +108,9 @@ public class Catalogo extends JDialog {
         x1 += aumentoX1;
         lbDinero.setBounds(x1 + 80, y1, 80, 20);
         x1 = x0;
+        posiciones.add(y1);
         y1 += aumentoY;
-
+        
         volver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -139,6 +142,39 @@ public class Catalogo extends JDialog {
 //                break;
 //                }
                 int posicionAuxCarro = encuentraProducto(productoAux);
+                if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                    if (posicionAuxCarro == -1) {
+                        
+                    }else{
+                        if (carro.get(posicionAuxCarro).getUnidades() == 1) {
+                            alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].setText("");
+                            alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText("");
+                            alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText("");
+                            alEtiquetas.remove(carro.get(posicionAuxCarro).getFilaCarrito());
+                            double ppuAux = carro.get(posicionAuxCarro).getPpu();
+                            total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) - ppuAux)));
+                            posiciones.remove(carro.get(posicionAuxCarro).getFilaCarrito()+1);
+                            y1 = y0;
+                            sacaCarrito(posicionAuxCarro);
+                            for (int i = posicionAuxCarro; i < carro.size(); i++) {
+                                carro.get(i).setFilaCarrito(carro.get(i).getFilaCarrito()-1);
+                            }
+                            
+
+                        }else{
+                            carro.get(posicionAuxCarro).setUnidades(carro.get(posicionAuxCarro).getUnidades()-1);
+                            alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText(String.valueOf(carro.get(posicionAuxCarro).getUnidades()));
+                            alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText(String.valueOf(dameTruncado((carro.get(posicionAuxCarro).getUnidades() * carro.get(posicionAuxCarro).getPpu()))));
+                            double ppuAux = carro.get(posicionAuxCarro).getPpu();
+                            total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) - ppuAux)));
+                            
+                        }
+ 
+                    }
+                }else{
+                    
+                
+                
                 if (posicionAuxCarro != -1) {
 
                     //System.out.println("productoAux[0]= " + productoAux[0] + "==carro.get(id).getId()=" + carro.get(posicionAuxCarro).getId());
@@ -155,6 +191,9 @@ public class Catalogo extends JDialog {
                     }
 
                 } else {
+                    while(posiciones.contains(y1)){
+                        y1+=aumentoY;
+                    }
                     JLabel[] labels = new JLabel[3];
 //                    System.out.println("ha entrao");
                     meteCarrito(productoAux);
@@ -173,7 +212,9 @@ public class Catalogo extends JDialog {
                     JLabel jlAux2 = new JLabel(String.valueOf(dameTruncado(carro.get(carro.size() - 1).getPpu() * carro.get(carro.size() - 1).getUnidades())));
                     pnCarrito.add(jlAux2);
                     jlAux2.setBounds(x1 + 60, y1, 80, 20);
+                    posiciones.add(y1);
                     y1 += aumentoY;
+                    
                     labels[2] = jlAux2;
                     alEtiquetas.add(labels);
 
@@ -185,6 +226,7 @@ public class Catalogo extends JDialog {
                     total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) + auxD)));
                     //total.setBounds(x0, y1 + 30, 200, 20);
                     aumentaTamañoCarrito();
+                } 
                 }
 
 //                System.out.println("==toString completo de ArrayList Carro: ===");
@@ -242,6 +284,11 @@ public class Catalogo extends JDialog {
         Producto p = new Producto(Integer.parseInt(nuevoProducto[0]), nuevoProducto[1], 1, Double.valueOf(nuevoProducto[3]));
         carro.add(p);
     }
+    
+    private void sacaCarrito(int i){
+        carro.remove(i);
+        
+    }
 
     private int encuentraProducto(String[] productoAux) {
 
@@ -258,7 +305,6 @@ public class Catalogo extends JDialog {
     private void aumentaTamañoCarrito() {
         altoSizeCarrito += 30;
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
-        pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
     }
     
     private double dameTruncado (double totalSinTruncar){
