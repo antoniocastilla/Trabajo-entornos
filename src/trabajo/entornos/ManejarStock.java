@@ -16,6 +16,7 @@ public class ManejarStock extends javax.swing.JDialog {
     private int xMouse;
     private int yMouse;
     private Object[][] datosCat;
+    private Object[][] datosPantalla;
 
     /**
      * Creates new form ManejarStock
@@ -73,10 +74,12 @@ public class ManejarStock extends javax.swing.JDialog {
         lbPVP = new javax.swing.JLabel();
         lbPP2 = new javax.swing.JLabel();
         cbCategoria = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
+        tfPVP = new javax.swing.JTextField();
         tfPP = new javax.swing.JTextField();
         tfCantidad = new javax.swing.JTextField();
         tfNombre = new javax.swing.JTextField();
+        lbPP3 = new javax.swing.JLabel();
+        btActualiza = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         FrameDrag = new javax.swing.JLabel();
@@ -84,12 +87,12 @@ public class ManejarStock extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
-        jPanel3.setBackground(new java.awt.Color(54, 65, 137));
+        jPanel3.setBackground(new java.awt.Color(250, 213, 92));
 
         pnNuevo.setBackground(new java.awt.Color(54, 65, 137));
         pnNuevo.setAutoscrolls(true);
 
-        jPanel1.setBackground(new java.awt.Color(54, 65, 137));
+        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         cbIds.setForeground(new java.awt.Color(204, 204, 204));
         cbIds.addItemListener(new java.awt.event.ItemListener() {
@@ -128,21 +131,23 @@ public class ManejarStock extends javax.swing.JDialog {
         lbPP2.setText("Categoría");
         lbPP2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        jTextField1.setBackground(new java.awt.Color(54, 65, 137));
-        jTextField1.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        tfPVP.setBackground(new java.awt.Color(102, 102, 102));
+        tfPVP.setForeground(new java.awt.Color(204, 204, 204));
+        tfPVP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                tfPVPActionPerformed(evt);
             }
         });
 
-        tfPP.setBackground(new java.awt.Color(54, 65, 137));
+        tfPP.setBackground(new java.awt.Color(102, 102, 102));
+        tfPP.setForeground(new java.awt.Color(204, 204, 204));
         tfPP.setText("...");
 
-        tfCantidad.setBackground(new java.awt.Color(54, 65, 137));
+        tfCantidad.setBackground(new java.awt.Color(102, 102, 102));
+        tfCantidad.setForeground(new java.awt.Color(204, 204, 204));
         tfCantidad.setText("...");
 
-        tfNombre.setBackground(new java.awt.Color(54, 65, 137));
+        tfNombre.setBackground(new java.awt.Color(102, 102, 102));
         tfNombre.setForeground(new java.awt.Color(204, 204, 204));
         tfNombre.setText("...");
         tfNombre.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +155,17 @@ public class ManejarStock extends javax.swing.JDialog {
                 tfNombreActionPerformed(evt);
             }
         });
+
+        lbPP3.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        lbPP3.setForeground(new java.awt.Color(238, 238, 238));
+        lbPP3.setText("actualizar");
+        lbPP3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        btActualiza.setForeground(new java.awt.Color(204, 204, 204));
+        btActualiza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/actualiza.png"))); // NOI18N
+        btActualiza.setBorder(null);
+        btActualiza.setBorderPainted(false);
+        btActualiza.setContentAreaFilled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,26 +175,28 @@ public class ManejarStock extends javax.swing.JDialog {
                 .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbPVP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(60, 60, 60))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lbPP1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lbPVP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(60, 60, 60))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbPP2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)))
+                            .addComponent(lbPP2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbPP3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfPP, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbIds, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfPVP, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(tfCantidad, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tfNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btActualiza))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -196,19 +214,26 @@ public class ManejarStock extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPP1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfPP, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
+                    .addComponent(tfPP, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfPVP, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbPVP, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbPP2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btActualiza))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(lbPP3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pnNuevo.addTab("Existente", jPanel1);
@@ -219,7 +244,7 @@ public class ManejarStock extends javax.swing.JDialog {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 878, Short.MAX_VALUE)
+            .addGap(0, 888, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +254,7 @@ public class ManejarStock extends javax.swing.JDialog {
         pnNuevo.addTab("Nuevo", jPanel2);
 
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel3.setForeground(new java.awt.Color(54, 65, 137));
         jLabel3.setText("x");
         jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -238,7 +263,7 @@ public class ManejarStock extends javax.swing.JDialog {
         });
 
         FrameDrag.setBackground(new java.awt.Color(204, 204, 204));
-        FrameDrag.setForeground(new java.awt.Color(204, 204, 204));
+        FrameDrag.setForeground(new java.awt.Color(54, 65, 137));
         FrameDrag.setText("Manejar Stock Almacén");
         FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
@@ -280,10 +305,7 @@ public class ManejarStock extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,9 +321,9 @@ public class ManejarStock extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNombreActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void tfPVPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPVPActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_tfPVPActionPerformed
 
     private void FrameDragMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragMouseDragged
         // TODO add your handling code here:
@@ -325,6 +347,11 @@ public class ManejarStock extends javax.swing.JDialog {
     private void cbIdsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdsItemStateChanged
         // TODO add your handling code here:
         System.out.println("Has cambiado de item");
+        datosPantalla = MySQL.getDatos("select nombre,cantidad,pp,ppu,categoria from producto where idProducto ="+cbIds.getSelectedItem().toString()+";");
+        MySQL.cierraRs();
+        
+        //tfNombre
+        
     }//GEN-LAST:event_cbIdsItemStateChanged
 
     /**
@@ -371,6 +398,7 @@ public class ManejarStock extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FrameDrag;
+    private javax.swing.JButton btActualiza;
     private javax.swing.JComboBox<String> cbCategoria;
     private javax.swing.JComboBox<String> cbIds;
     private javax.swing.JLabel jLabel1;
@@ -379,14 +407,15 @@ public class ManejarStock extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCantidad;
     private javax.swing.JLabel lbPP1;
     private javax.swing.JLabel lbPP2;
+    private javax.swing.JLabel lbPP3;
     private javax.swing.JLabel lbPVP;
     private javax.swing.JTabbedPane pnNuevo;
     private javax.swing.JTextField tfCantidad;
     private javax.swing.JTextField tfNombre;
     private javax.swing.JTextField tfPP;
+    private javax.swing.JTextField tfPVP;
     // End of variables declaration//GEN-END:variables
 }
