@@ -26,7 +26,7 @@ public class Inicio extends javax.swing.JFrame {
                 System.exit(0);
             }
         });
-        
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }

@@ -225,6 +225,7 @@ public class CatalogoAlv extends JDialog {
         this.setTitle("Papelería - Catálogo");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(1000, 700);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
