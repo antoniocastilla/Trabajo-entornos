@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class Catalogo extends JDialog {
+public class CatalogoAlv extends JDialog {
     
 
     private JTextArea jt1;
@@ -21,7 +21,7 @@ public class Catalogo extends JDialog {
     private MySQL db;
     private JTable jTabla1;
     private JScrollPane jScrollPanel1, jScrollPanel2;
-    private JPanel pnCarrito,pnCompleto;
+    private JPanel pnCarrito;
     private DefaultTableModel modelo;
     private ArrayList<JLabel[]> alEtiquetas;
     private ArrayList<Producto> carro;
@@ -37,61 +37,44 @@ public class Catalogo extends JDialog {
     private int altoSizeCarrito = 170;
     private ArrayList<Integer> posiciones;
 
-    public Catalogo() {
+    public CatalogoAlv() {
 
         this.setLayout(null);
+        this.setBackground(new java.awt.Color(83, 94, 165));
 
-
-        //Instancias
-        pnCompleto = new JPanel();
         alEtiquetas = new ArrayList<JLabel[]>();
         jt1 = new JTextArea();
+        jt1.setEditable(false);
         compra = new JButton("Compra");
         carrito = new JButton("Ver carrito");
         volver = new JButton("Volver");
         jTabla1 = new javax.swing.JTable();
         jScrollPanel1 = new javax.swing.JScrollPane(jTabla1);
         pnCarrito = new JPanel();
+        pnCarrito.setLayout(null);
+        pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
+        pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
         JPanel xapu = new JPanel();
-        
-        
+        xapu.setLayout(new BorderLayout());
+        xapu.add(pnCarrito);
         jScrollPanel2 = new JScrollPane(xapu, 20, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         carro = new ArrayList<Producto>();
         //labels = new JLabel[3];
         total = new JLabel("Total: 0");
         posiciones = new ArrayList<Integer>();
 
-
-        //Ajustes
-        jt1.setEditable(false);
-        pnCompleto.setBackground(new java.awt.Color(102, 102, 102));
-        pnCompleto.setLayout(null);
-        pnCarrito.setLayout(null);
-        pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
-        xapu.setLayout(new BorderLayout());
-        jScrollPanel1.setBackground(new java.awt.Color(102, 102, 102));
-        jScrollPanel2.setBackground(new java.awt.Color(102, 102, 102));
-        pnCarrito.setBackground(new java.awt.Color(102, 102, 102));
-        pnCarrito.setForeground(Color.white);
-
-        //Bounds
-        pnCompleto.setBounds(0, 0, 1000, 700);
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
         compra.setBounds(20, 600, 100, 40);
         volver.setBounds(120, 600, 100, 40);
         total.setBounds(650,600,100,40);
-        pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
-        
 
-        this.add(pnCompleto);
-        pnCompleto.add(compra);
-        pnCompleto.add(carrito);
-        pnCompleto.add(volver);
-        pnCompleto.add(jScrollPanel1);
-        pnCompleto.add(jScrollPanel2);
-        pnCompleto.add(total);
-        xapu.add(pnCarrito);
+        this.add(compra);
+        this.add(carrito);
+        this.add(volver);
+        this.add(jScrollPanel1);
+        this.add(jScrollPanel2);
+        this.add(total);
 
         rellenaTabla();
 
@@ -116,7 +99,7 @@ public class Catalogo extends JDialog {
         volver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Catalogo.this.setVisible(false);
+                CatalogoAlv.this.setVisible(false);
 
             }
         });
@@ -307,6 +290,7 @@ public class Catalogo extends JDialog {
     private void aumentaTamañoCarrito() {
         altoSizeCarrito += 30;
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
+        pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
     }
     
     private double dameTruncado (double totalSinTruncar){

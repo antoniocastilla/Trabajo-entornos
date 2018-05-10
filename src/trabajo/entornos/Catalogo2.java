@@ -33,12 +33,11 @@ public class Catalogo2 extends javax.swing.JDialog {
         alProductos = new ArrayList<Producto>();
         rellenaTabla();
         initComponents();
-        
+
         altoSizeCarrito = jScrollPane2.getHeight();
-        System.out.println("alto mide: "+altoSizeCarrito);
-        
+        System.out.println("alto mide: " + altoSizeCarrito);
+
         this.setVisible(true);
-        
 
     }
 
@@ -63,15 +62,6 @@ public class Catalogo2 extends javax.swing.JDialog {
             pnCarrito.add(lbNombre);
             pnCarrito.add(lbUnidades);
             pnCarrito.add(lbPrecio);
-        }
-        
-        if (altoSizeCarrito < 400){
-        altoSizeCarrito = altoSizeCarrito+40;
-        //jScrollPane2.setPreferredSize(new Dimension(300, altoSizeCarrito));
-        jScrollPane2.setSize(400, altoSizeCarrito);
-        } else{
-            altoSizeCarrito+=20;
-            pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
         }
 
     }
@@ -215,6 +205,14 @@ public class Catalogo2 extends javax.swing.JDialog {
             }
 
             if (!contiene) {
+                if (altoSizeCarrito < 400) {
+                    altoSizeCarrito = altoSizeCarrito + 40;
+                    //jScrollPane2.setPreferredSize(new Dimension(300, altoSizeCarrito));
+                    jScrollPane2.setSize(400, altoSizeCarrito);
+                } else {
+                    altoSizeCarrito += 40;
+                    pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
+                }
                 Producto producto = new Producto();
                 producto.setId(Integer.parseInt(productoAux[0].toString()));
                 producto.setNombre(productoAux[1]);

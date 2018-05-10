@@ -37,6 +37,8 @@ public class MySQL {
         }
 
     }
+    
+    
 
     public static void cierra() {
         try {
@@ -47,6 +49,14 @@ public class MySQL {
             se.printStackTrace();
         }
 
+    }
+    
+    public static void cierraRs(){
+        try {
+            rs.close();
+        } catch (SQLException ex) {
+            System.out.println("Error cerrando RS: "+ex);
+        }
     }
 
     public static boolean ejecutaConsulta(String sql) {
