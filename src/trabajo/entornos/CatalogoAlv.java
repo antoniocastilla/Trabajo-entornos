@@ -21,7 +21,7 @@ public class CatalogoAlv extends JDialog {
     private MySQL db;
     private JTable jTabla1;
     private JScrollPane jScrollPanel1, jScrollPanel2;
-    private JPanel pnCarrito;
+    private JPanel pnContenedor, pnCarrito;
     private DefaultTableModel modelo;
     private ArrayList<JLabel[]> alEtiquetas;
     private ArrayList<Producto> carro;
@@ -42,6 +42,7 @@ public class CatalogoAlv extends JDialog {
         this.setLayout(null);
         this.setBackground(new java.awt.Color(83, 94, 165));
 
+        pnContenedor = new JPanel();
         alEtiquetas = new ArrayList<JLabel[]>();
         jt1 = new JTextArea();
         jt1.setEditable(false);
@@ -63,25 +64,35 @@ public class CatalogoAlv extends JDialog {
         total = new JLabel("Total: 0");
         posiciones = new ArrayList<Integer>();
 
+        
+        pnContenedor.setLayout(null);
+        pnContenedor.setBackground(new Color(102,102,102));
+        pnContenedor.setBounds(0, 0, 1000, 700);
+        pnCarrito.setBackground(new java.awt.Color(102, 102, 102));
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
+        jTabla1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         compra.setBounds(20, 600, 100, 40);
         volver.setBounds(120, 600, 100, 40);
         total.setBounds(650,600,100,40);
 
-        this.add(compra);
-        this.add(carrito);
-        this.add(volver);
-        this.add(jScrollPanel1);
-        this.add(jScrollPanel2);
-        this.add(total);
+        this.add(pnContenedor);
+        pnContenedor.add(compra);
+        pnContenedor.add(carrito);
+        pnContenedor.add(volver);
+        pnContenedor.add(jScrollPanel1);
+        pnContenedor.add(jScrollPanel2);
+        pnContenedor.add(total);
 
         rellenaTabla();
 
         //Panel del Carrito
         JLabel lbProducto = new JLabel("Producto");
+        lbProducto.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
         JLabel lbUnid = new JLabel("Unidades");
+        lbUnid.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
         JLabel lbDinero = new JLabel("Dinero");
+        lbDinero.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
 
         pnCarrito.add(lbProducto);
         pnCarrito.add(lbUnid);
@@ -183,12 +194,16 @@ public class CatalogoAlv extends JDialog {
 //                    System.out.println("ha entrao");
                     meteCarrito(productoAux);
                     JLabel jlAux = new JLabel(carro.get(carro.size() - 1).getNombre());
+                    jlAux.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+                    jlAux.setForeground(new java.awt.Color(204, 204, 204));
                     pnCarrito.add(jlAux);
                     jlAux.setBounds(x1, y1, 170, 20);
                     x1 += aumentoX2;
                     labels[0] = jlAux;
 
                     JLabel jlAux1 = new JLabel(String.valueOf(carro.get(carro.size() - 1).getUnidades()));
+                    jlAux1.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+                    jlAux1.setForeground(new java.awt.Color(204, 204, 204));
                     pnCarrito.add(jlAux1);
                     jlAux1.setBounds(x1 + 90, y1, 80, 20);
                     x1 += aumentoX1;
@@ -196,6 +211,8 @@ public class CatalogoAlv extends JDialog {
 
                     JLabel jlAux2 = new JLabel(String.valueOf(dameTruncado(carro.get(carro.size() - 1).getPpu() * carro.get(carro.size() - 1).getUnidades())));
                     pnCarrito.add(jlAux2);
+                    jlAux2.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+                    jlAux2.setForeground(new java.awt.Color(204, 204, 204));
                     jlAux2.setBounds(x1 + 60, y1, 80, 20);
                     posiciones.add(y1);
                     y1 += aumentoY;
