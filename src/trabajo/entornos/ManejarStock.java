@@ -5,7 +5,14 @@
  */
 package trabajo.entornos;
 
+import java.awt.Color;
 import static java.awt.Frame.ICONIFIED;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -179,6 +186,11 @@ public class ManejarStock extends javax.swing.JDialog {
         btActualiza.setBorder(null);
         btActualiza.setBorderPainted(false);
         btActualiza.setContentAreaFilled(false);
+        btActualiza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btActualizaActionPerformed(evt);
+            }
+        });
 
         jSeparator1.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -298,6 +310,7 @@ public class ManejarStock extends javax.swing.JDialog {
         });
 
         FrameDrag.setBackground(new java.awt.Color(204, 204, 204));
+        FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
         FrameDrag.setForeground(new java.awt.Color(54, 65, 137));
         FrameDrag.setText("Manejar Stock Almacén");
         FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -402,14 +415,106 @@ public class ManejarStock extends javax.swing.JDialog {
         }
 
         for (int i = 0; i < cbCategoria.getItemCount(); i++) {
-            if (cbCategoria.getItemAt(i).compareToIgnoreCase(datosPantalla[0][4].toString()) == 0){
+            if (cbCategoria.getItemAt(i).compareToIgnoreCase(datosPantalla[0][4].toString()) == 0) {
                 cbCategoria.setSelectedIndex(i);
                 break;
             }
-            
+
         }
 
     }//GEN-LAST:event_cbIdsItemStateChanged
+
+    private void btActualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizaActionPerformed
+        // TODO add your handling code here:
+        Object[] datosInsertar = new Object[6];
+        boolean datosCorrectos = true;
+       
+
+
+        if (tfNombre.getText().isEmpty()) {
+            tfNombre.setBackground(Color.red);
+            datosCorrectos = false;
+        } else{
+            tfNombre.setBackground(new java.awt.Color(102, 102, 102));
+        }
+        
+        try {
+            Integer.parseInt(tfCantidad.getText());
+            tfCantidad.setBackground(new java.awt.Color(102, 102, 102));
+        } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfCantidad.setBackground(Color.red);
+        }
+        
+        try {
+            Double.parseDouble(tfPP.getText());
+            tfPP.setBackground(new java.awt.Color(102, 102, 102));
+           } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfPP.setBackground(Color.red);
+
+        }
+        
+        try {
+            Double.parseDouble(tfPVP.getText());
+            tfPVP.setBackground(new java.awt.Color(102, 102, 102));
+           } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfPVP.setBackground(Color.red);
+
+        }
+        
+        if (datosCorrectos){
+            
+            datosInsertar[0] = cbIds.getSelectedItem().toString();
+            datosInsertar[1] = tfNombre.getText();
+            datosInsertar[2] = tfCantidad.getText();
+            datosInsertar[3] = tfPP.getText();
+            datosInsertar [4] = tfPVP.getText();
+            datosInsertar [5] = cbCategoria.getSelectedItem().toString();
+            
+            Object[][] datosComparar = MySQL.getDatos("select * from producto where idProducto = "+datosInsertar[0]+";");
+            MySQL.cierraRs();
+            
+            if (datosInsertar[1].toString().compareToIgnoreCase(datosComparar[0][1].toString()) != 0){
+                System.out.println("Nombre diferente");
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
+                System.out.println("Nombre filas afectadas: "+afectadas);
+            }
+            
+            if (datosInsertar[2].toString().compareToIgnoreCase(datosComparar[0][2].toString()) != 0){
+                System.out.println("Cantidad diferente");
+//                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
+               
+            }
+            
+            if (datosInsertar[3].toString().compareToIgnoreCase(datosComparar[0][3].toString()) != 0){
+                System.out.println("PP diferente");
+//                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
+//                System.out.println("Nombre filas afectadas: "+afectadas);
+            }
+            
+            if (datosInsertar[4].toString().compareToIgnoreCase(datosComparar[0][4].toString()) != 0){
+                System.out.println("PVP diferente");
+//                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
+//                System.out.println("Nombre filas afectadas: "+afectadas);
+            }
+            
+            if (datosInsertar[5].toString().compareToIgnoreCase(datosComparar[0][5].toString()) != 0){
+                System.out.println("Categoria diferente");
+//                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
+//                System.out.println("Nombre filas afectadas: "+afectadas);
+            }
+            
+            System.out.println("todo ok");
+        }
+
+        
+
+        
+
+
+    }//GEN-LAST:event_btActualizaActionPerformed
 
     /**
      * @param args the command line arguments
