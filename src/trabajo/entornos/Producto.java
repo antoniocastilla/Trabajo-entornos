@@ -42,7 +42,7 @@ public class Producto {
     }
 
     public String toString(){
-        return "ID: "+id+"\tNombre: "+nombre+"\t Unidades: "+unidades+"\tPPU: "+ppu;
+        return nombre+"\t\tUnidades: "+unidades+"\tTotal: "+ppu*unidades;
     }
     
     public String getNombre() {
@@ -62,7 +62,7 @@ public class Producto {
     }
 
     public double getPpu() {
-        return ppu;
+        return (double) Math.round(ppu * 100d) / 100d;
     }
 
     public void setPpu(double ppu) {
