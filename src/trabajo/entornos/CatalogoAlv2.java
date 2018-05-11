@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 public class CatalogoAlv2 extends JDialog {
 
+    private int xMouse;
+            private int yMouse;
     private JTextArea jt1;
     private JButton compra, carrito, volver;
     private MySQL db;
@@ -66,8 +68,42 @@ public class CatalogoAlv2 extends JDialog {
         //labels = new JLabel[3];
         total = new JLabel("Total: 0");
         posiciones = new ArrayList<Integer>();
-        //FrameDrag y Cierre
+        
+    //FrameDrag y Cierre
         FrameDrag = new JLabel("Catálogo");
+        FrameDrag.setBounds(0, 0, 990, 30);
+        FrameDrag.setBackground(new java.awt.Color(204, 204, 204));
+        FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        FrameDrag.setForeground(new java.awt.Color(54, 65, 137));
+        FrameDrag.setText("Manejar Stock Almacén");
+        FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragMouseDragged(evt);
+            }
+            private void FrameDragMouseDragged(java.awt.event.MouseEvent evt) {                                       
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+
+        CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
+        }
+            
+        });
+        FrameDrag.addMouseListener(new java.awt.event.MouseAdapter() {
+            
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragMousePressed(evt);
+            }
+            private void FrameDragMousePressed(java.awt.event.MouseEvent evt) {                                       
+        // TODO add your handling code here:
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+        }
+        });
+        pnContenedor.add(FrameDrag);
+        lbX = new JLabel("x");
+        lbX.setBounds(970, 0, 30, 30);
+        pnContenedor.add(lbX);
 
         pnContenedor.setLayout(null);
         pnContenedor.setBackground(new Color(102, 102, 102));
@@ -240,6 +276,9 @@ public class CatalogoAlv2 extends JDialog {
 //                jTabla1.clearSelection();
             }
         });
+        
+        //Más FrameDrag
+        
 
         this.setTitle("Papelería - Catálogo");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
