@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class CatalogoAlv2 extends JDialog {
 
     private int xMouse;
-            private int yMouse;
+    private int yMouse;
     private JTextArea jt1;
     private JButton compra, carrito, volver;
     private MySQL db;
@@ -37,7 +37,7 @@ public class CatalogoAlv2 extends JDialog {
     private JLabel total;
     private int altoSizeCarrito = 170;
     private ArrayList<Integer> posiciones;
-    
+
     //Barra superior (FrameDrag, X para cerrar)
     private JLabel FrameDrag;
     private JLabel lbX;
@@ -68,41 +68,39 @@ public class CatalogoAlv2 extends JDialog {
         //labels = new JLabel[3];
         total = new JLabel("Total: 0");
         posiciones = new ArrayList<Integer>();
-        
-    //FrameDrag y Cierre
+
+        //FrameDrag y Cierre
         FrameDrag = new JLabel("Catálogo");
-        FrameDrag.setBounds(0, 0, 990, 30);
+        FrameDrag.setBounds(10, 0, 960, 30);
         FrameDrag.setBackground(new java.awt.Color(204, 204, 204));
         FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        FrameDrag.setForeground(new java.awt.Color(54, 65, 137));
+        FrameDrag.setForeground(new java.awt.Color(255, 255, 255));
         FrameDrag.setText("Manejar Stock Almacén");
         FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
-                FrameDragMouseDragged(evt);
+                int x = evt.getXOnScreen();
+                int y = evt.getYOnScreen();
+                CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
             }
-            private void FrameDragMouseDragged(java.awt.event.MouseEvent evt) {                                       
-        // TODO add your handling code here:
-        int x = evt.getXOnScreen();
-        int y = evt.getYOnScreen();
-
-        CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
-        }
-            
         });
         FrameDrag.addMouseListener(new java.awt.event.MouseAdapter() {
-            
+
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                FrameDragMousePressed(evt);
+                xMouse = evt.getX();
+                yMouse = evt.getY();
             }
-            private void FrameDragMousePressed(java.awt.event.MouseEvent evt) {                                       
-        // TODO add your handling code here:
-        xMouse = evt.getX();
-        yMouse = evt.getY();
-        }
         });
+        lbX = new JLabel("X");
+        lbX.setBounds(975, 0, 30, 30);
+        lbX.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        lbX.setForeground(new java.awt.Color(255, 255, 255));
+        lbX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CatalogoAlv2.this.setVisible(false);
+            }
+        });
+        
         pnContenedor.add(FrameDrag);
-        lbX = new JLabel("x");
-        lbX.setBounds(970, 0, 30, 30);
         pnContenedor.add(lbX);
 
         pnContenedor.setLayout(null);
@@ -115,6 +113,7 @@ public class CatalogoAlv2 extends JDialog {
         compra.setBounds(20, 600, 100, 40);
         volver.setBounds(120, 600, 100, 40);
         total.setBounds(650, 600, 100, 40);
+        this.setUndecorated(true);
 
         this.add(pnContenedor);
         pnContenedor.add(compra);
@@ -200,10 +199,12 @@ public class CatalogoAlv2 extends JDialog {
 //                    System.out.println("ha entrao");
                         meteCarrito(productoAux);
                         JLabel jlAux = new JLabel(carro.get(carro.size() - 1).getNombre());
+                        jlAux.setToolTipText("Click con el botón derecho para quitar producto");
                         jlAux.addMouseListener(new MouseAdapter() {
                             public void mousePressed(MouseEvent mouseEvent) {
                                 int posicionAuxCarro = encuentraProducto(productoAux);
-                                if (mouseEvent.getButton() == MouseEvent.BUTTON3) {System.out.println("Botón derecho en la etiqueta");
+                                if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+                                    System.out.println("Botón derecho en la etiqueta");
                                     if (posicionAuxCarro == -1) {
 
                                     } else if (carro.get(posicionAuxCarro).getUnidades() == 1) {
@@ -276,10 +277,8 @@ public class CatalogoAlv2 extends JDialog {
 //                jTabla1.clearSelection();
             }
         });
-        
-        //Más FrameDrag
-        
 
+        //Más FrameDrag
         this.setTitle("Papelería - Catálogo");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(1000, 700);
@@ -351,7 +350,7 @@ public class CatalogoAlv2 extends JDialog {
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
         pnCarrito.setPreferredSize(new Dimension(300, altoSizeCarrito));
     }
-    
+
     private void disminuyeTamañoCarrito() {
         altoSizeCarrito -= 30;
         pnCarrito.setBounds(0, 0, 280, altoSizeCarrito);
