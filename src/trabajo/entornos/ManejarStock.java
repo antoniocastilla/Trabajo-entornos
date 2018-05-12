@@ -22,6 +22,7 @@ public class ManejarStock extends javax.swing.JDialog {
 
     private int xMouse;
     private int yMouse;
+    Object[][] datos;
     private Object[][] datosCat;
     private Object[][] datosPantalla;
 
@@ -32,7 +33,7 @@ public class ManejarStock extends javax.swing.JDialog {
         super(parent, modal);
 
         MySQL.conecta("pepe", "pepa");
-        Object[][] datos = MySQL.getDatos("select idProducto from Producto order by idProducto;");
+        datos = MySQL.getDatos("select idProducto from Producto order by idProducto;");
         MySQL.cierraRs();
 
         MySQL.conecta("pepe", "pepa");
@@ -40,8 +41,9 @@ public class ManejarStock extends javax.swing.JDialog {
         MySQL.cierraRs();
 
         initComponents();
-        
-        lbUltimoID.setText(datos[datos.length-1][0].toString());
+
+        int ultimoId = Integer.parseInt(datos[datos.length - 1][0].toString()) + 1;
+        lbUltimoID.setText(String.valueOf(ultimoId));
 
         for (int i = 0; i < datos.length; i++) {
 
@@ -49,8 +51,12 @@ public class ManejarStock extends javax.swing.JDialog {
                 cbIds.addItem(datos[i][j].toString());
             }
         }
-        
-        
+        cbNuevoCategoria.removeAllItems();
+        for (int i = 0; i < datosCat.length; i++) {
+            for (int j = 0; j < datosCat[i].length; j++) {
+                cbNuevoCategoria.addItem(datosCat[i][j].toString());
+            }
+        }
 
 //        
 //        for (int i = 0; i < datosCat.length; i++) {
@@ -102,13 +108,13 @@ public class ManejarStock extends javax.swing.JDialog {
         lbPP4 = new javax.swing.JLabel();
         lbPVP1 = new javax.swing.JLabel();
         lbPP5 = new javax.swing.JLabel();
-        cbCategoria1 = new javax.swing.JComboBox<>();
-        tfPVP1 = new javax.swing.JTextField();
-        tfPP1 = new javax.swing.JTextField();
-        tfCantidad1 = new javax.swing.JTextField();
-        tfNombre1 = new javax.swing.JTextField();
+        cbNuevoCategoria = new javax.swing.JComboBox<>();
+        tfNuevoPPU = new javax.swing.JTextField();
+        tfNuevoPP = new javax.swing.JTextField();
+        tfNuevaCantidad = new javax.swing.JTextField();
+        tfNuevoNombre = new javax.swing.JTextField();
         lbPP6 = new javax.swing.JLabel();
-        btActualiza1 = new javax.swing.JButton();
+        btRegistra = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
         jSeparator9 = new javax.swing.JSeparator();
@@ -126,6 +132,11 @@ public class ManejarStock extends javax.swing.JDialog {
 
         pnTabs.setBackground(new java.awt.Color(102, 102, 102));
         pnTabs.setAutoscrolls(true);
+        pnTabs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnTabsMouseClicked(evt);
+            }
+        });
 
         pnExistente.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -365,40 +376,40 @@ public class ManejarStock extends javax.swing.JDialog {
         lbPP5.setText("Categoría");
         lbPP5.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        cbCategoria1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        cbCategoria1.setForeground(new java.awt.Color(204, 204, 204));
+        cbNuevoCategoria.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        cbNuevoCategoria.setForeground(new java.awt.Color(204, 204, 204));
 
-        tfPVP1.setBackground(new java.awt.Color(102, 102, 102));
-        tfPVP1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        tfPVP1.setForeground(new java.awt.Color(204, 204, 204));
-        tfPVP1.setText("...");
-        tfPVP1.setBorder(null);
-        tfPVP1.addActionListener(new java.awt.event.ActionListener() {
+        tfNuevoPPU.setBackground(new java.awt.Color(102, 102, 102));
+        tfNuevoPPU.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        tfNuevoPPU.setForeground(new java.awt.Color(204, 204, 204));
+        tfNuevoPPU.setText("...");
+        tfNuevoPPU.setBorder(null);
+        tfNuevoPPU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfPVP1ActionPerformed(evt);
+                tfNuevoPPUActionPerformed(evt);
             }
         });
 
-        tfPP1.setBackground(new java.awt.Color(102, 102, 102));
-        tfPP1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        tfPP1.setForeground(new java.awt.Color(204, 204, 204));
-        tfPP1.setText("...");
-        tfPP1.setBorder(null);
+        tfNuevoPP.setBackground(new java.awt.Color(102, 102, 102));
+        tfNuevoPP.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        tfNuevoPP.setForeground(new java.awt.Color(204, 204, 204));
+        tfNuevoPP.setText("...");
+        tfNuevoPP.setBorder(null);
 
-        tfCantidad1.setBackground(new java.awt.Color(102, 102, 102));
-        tfCantidad1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        tfCantidad1.setForeground(new java.awt.Color(204, 204, 204));
-        tfCantidad1.setText("...");
-        tfCantidad1.setBorder(null);
+        tfNuevaCantidad.setBackground(new java.awt.Color(102, 102, 102));
+        tfNuevaCantidad.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        tfNuevaCantidad.setForeground(new java.awt.Color(204, 204, 204));
+        tfNuevaCantidad.setText("...");
+        tfNuevaCantidad.setBorder(null);
 
-        tfNombre1.setBackground(new java.awt.Color(102, 102, 102));
-        tfNombre1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        tfNombre1.setForeground(new java.awt.Color(238, 238, 238));
-        tfNombre1.setText("...");
-        tfNombre1.setBorder(null);
-        tfNombre1.addActionListener(new java.awt.event.ActionListener() {
+        tfNuevoNombre.setBackground(new java.awt.Color(102, 102, 102));
+        tfNuevoNombre.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        tfNuevoNombre.setForeground(new java.awt.Color(238, 238, 238));
+        tfNuevoNombre.setText("...");
+        tfNuevoNombre.setBorder(null);
+        tfNuevoNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNombre1ActionPerformed(evt);
+                tfNuevoNombreActionPerformed(evt);
             }
         });
 
@@ -407,15 +418,15 @@ public class ManejarStock extends javax.swing.JDialog {
         lbPP6.setText("Registrar");
         lbPP6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
-        btActualiza1.setForeground(new java.awt.Color(204, 204, 204));
-        btActualiza1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/registrar.png"))); // NOI18N
-        btActualiza1.setToolTipText("Click para registrar producto");
-        btActualiza1.setBorder(null);
-        btActualiza1.setBorderPainted(false);
-        btActualiza1.setContentAreaFilled(false);
-        btActualiza1.addActionListener(new java.awt.event.ActionListener() {
+        btRegistra.setForeground(new java.awt.Color(204, 204, 204));
+        btRegistra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/registrar.png"))); // NOI18N
+        btRegistra.setToolTipText("Click para registrar producto");
+        btRegistra.setBorder(null);
+        btRegistra.setBorderPainted(false);
+        btRegistra.setContentAreaFilled(false);
+        btRegistra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btActualiza1ActionPerformed(evt);
+                btRegistraActionPerformed(evt);
             }
         });
 
@@ -459,15 +470,15 @@ public class ManejarStock extends javax.swing.JDialog {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)))
                         .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfPP1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbCategoria1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfPVP1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfNuevoPP, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbNuevoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfNuevoPPU, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(tfCantidad1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(tfNombre1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(tfNuevaCantidad, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tfNuevoNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnNuevoLayout.createSequentialGroup()
                                 .addGap(39, 39, 39)
-                                .addComponent(btActualiza1))
+                                .addComponent(btRegistra))
                             .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -496,7 +507,7 @@ public class ManejarStock extends javax.swing.JDialog {
                 .addGap(15, 15, 15)
                 .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfNuevoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -504,31 +515,31 @@ public class ManejarStock extends javax.swing.JDialog {
                     .addComponent(lbCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnNuevoLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addComponent(tfCantidad1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(tfNuevaCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(7, 7, 7)
                 .addComponent(jSeparator10, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPP4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfPP1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfNuevoPP, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfPVP1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfNuevoPPU, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbPVP1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbCategoria1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNuevoCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbPP5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnNuevoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnNuevoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btActualiza1))
+                        .addComponent(btRegistra))
                     .addGroup(pnNuevoLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addComponent(lbPP6, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -665,16 +676,14 @@ public class ManejarStock extends javax.swing.JDialog {
         // TODO add your handling code here:
         Object[] datosInsertar = new Object[6];
         boolean datosCorrectos = true;
-       
-
 
         if (tfNombre.getText().isEmpty()) {
             tfNombre.setBackground(Color.red);
             datosCorrectos = false;
-        } else{
+        } else {
             tfNombre.setBackground(new java.awt.Color(102, 102, 102));
         }
-        
+
         try {
             Integer.parseInt(tfCantidad.getText());
             tfCantidad.setBackground(new java.awt.Color(102, 102, 102));
@@ -682,88 +691,168 @@ public class ManejarStock extends javax.swing.JDialog {
             datosCorrectos = false;
             tfCantidad.setBackground(Color.red);
         }
-        
+
         try {
             Double.parseDouble(tfPP.getText());
             tfPP.setBackground(new java.awt.Color(102, 102, 102));
-           } catch (NumberFormatException eParse) {
+        } catch (NumberFormatException eParse) {
             datosCorrectos = false;
             tfPP.setBackground(Color.red);
 
         }
-        
+
         try {
             Double.parseDouble(tfPVP.getText());
             tfPVP.setBackground(new java.awt.Color(102, 102, 102));
-           } catch (NumberFormatException eParse) {
+        } catch (NumberFormatException eParse) {
             datosCorrectos = false;
             tfPVP.setBackground(Color.red);
 
         }
-        
-        if (datosCorrectos){
-            
+
+        if (datosCorrectos) {
+
             datosInsertar[0] = cbIds.getSelectedItem().toString();
             datosInsertar[1] = tfNombre.getText();
             datosInsertar[2] = tfCantidad.getText();
             datosInsertar[3] = tfPP.getText();
-            datosInsertar [4] = tfPVP.getText();
-            datosInsertar [5] = cbCategoria.getSelectedItem().toString();
-            
-            Object[][] datosComparar = MySQL.getDatos("select * from producto where idProducto = "+datosInsertar[0]+";");
+            datosInsertar[4] = tfPVP.getText();
+            datosInsertar[5] = cbCategoria.getSelectedItem().toString();
+
+            Object[][] datosComparar = MySQL.getDatos("select * from producto where idProducto = " + datosInsertar[0] + ";");
             MySQL.cierraRs();
-            
-            if (datosInsertar[1].toString().compareToIgnoreCase(datosComparar[0][1].toString()) != 0){
+
+            if (datosInsertar[1].toString().compareToIgnoreCase(datosComparar[0][1].toString()) != 0) {
                 System.out.println("Nombre diferente");
-                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='"+datosInsertar[1]+"' where idProducto ="+datosInsertar[0]+";");
-                System.out.println("Nombre filas afectadas: "+afectadas);
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set nombre ='" + datosInsertar[1] + "' where idProducto =" + datosInsertar[0] + ";");
+                System.out.println("Nombre filas afectadas: " + afectadas);
             }
-            
-            if (datosInsertar[2].toString().compareToIgnoreCase(datosComparar[0][2].toString()) != 0){
+
+            if (datosInsertar[2].toString().compareToIgnoreCase(datosComparar[0][2].toString()) != 0) {
                 System.out.println("Cantidad diferente");
-                int afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad ="+datosInsertar[2]+" where idProducto ="+datosInsertar[0]+";");
-                System.out.println("Cantidad filas afectadas: "+afectadas);
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad =" + datosInsertar[2] + " where idProducto =" + datosInsertar[0] + ";");
+                System.out.println("Cantidad filas afectadas: " + afectadas);
             }
-            
-            if (datosInsertar[3].toString().compareToIgnoreCase(datosComparar[0][3].toString()) != 0){
+
+            if (datosInsertar[3].toString().compareToIgnoreCase(datosComparar[0][3].toString()) != 0) {
                 System.out.println("PP diferente");
-                int afectadas = MySQL.ejecutaConsultaAccion("update producto set pp ="+datosInsertar[3]+" where idProducto ="+datosInsertar[0]+";");
-                System.out.println("PP filas afectadas: "+afectadas);
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set pp =" + datosInsertar[3] + " where idProducto =" + datosInsertar[0] + ";");
+                System.out.println("PP filas afectadas: " + afectadas);
             }
-            
-            if (datosInsertar[4].toString().compareToIgnoreCase(datosComparar[0][4].toString()) != 0){
+
+            if (datosInsertar[4].toString().compareToIgnoreCase(datosComparar[0][4].toString()) != 0) {
                 System.out.println("PVP diferente");
-                int afectadas = MySQL.ejecutaConsultaAccion("update producto set ppu = "+datosInsertar[4]+" where idProducto ="+datosInsertar[0]+";");
-                System.out.println("PVP(ppu) filas afectadas: "+afectadas);
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set ppu = " + datosInsertar[4] + " where idProducto =" + datosInsertar[0] + ";");
+                System.out.println("PVP(ppu) filas afectadas: " + afectadas);
             }
-            
-            if (datosInsertar[5].toString().compareToIgnoreCase(datosComparar[0][5].toString()) != 0){
+
+            if (datosInsertar[5].toString().compareToIgnoreCase(datosComparar[0][5].toString()) != 0) {
                 System.out.println("Categoria diferente");
-                int afectadas = MySQL.ejecutaConsultaAccion("update producto set categoria = '"+datosInsertar[5]+"' where idProducto ="+datosInsertar[0]+";");
-                System.out.println("Nombre filas afectadas: "+afectadas);
+                int afectadas = MySQL.ejecutaConsultaAccion("update producto set categoria = '" + datosInsertar[5] + "' where idProducto =" + datosInsertar[0] + ";");
+                System.out.println("Nombre filas afectadas: " + afectadas);
             }
-            
+
             System.out.println("todo ok");
         }
-
-        
-
-        
 
 
     }//GEN-LAST:event_btActualizaActionPerformed
 
-    private void tfPVP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPVP1ActionPerformed
+    private void tfNuevoPPUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNuevoPPUActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfPVP1ActionPerformed
+    }//GEN-LAST:event_tfNuevoPPUActionPerformed
 
-    private void tfNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNombre1ActionPerformed
+    private void tfNuevoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNuevoNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfNombre1ActionPerformed
+    }//GEN-LAST:event_tfNuevoNombreActionPerformed
 
-    private void btActualiza1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualiza1ActionPerformed
+    private void btRegistraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btActualiza1ActionPerformed
+        System.out.println("has pulsado registrar");
+
+        Object[] nuevoProd = new Object[6];
+        boolean datosCorrectos = true;
+
+        if (tfNuevoNombre.getText().isEmpty()) {
+            tfNuevoNombre.setBackground(Color.red);
+            datosCorrectos = false;
+        } else {
+            tfNuevoNombre.setBackground(new java.awt.Color(102, 102, 102));
+        }
+        if (tfNuevoNombre.getText().compareToIgnoreCase("...") == 0) {
+            tfNuevoNombre.setBackground(Color.red);
+            datosCorrectos = false;
+        } else {
+            tfNuevoNombre.setBackground(new java.awt.Color(102, 102, 102));
+        }
+
+        try {
+            Integer.parseInt(tfNuevaCantidad.getText());
+            tfNuevaCantidad.setBackground(new java.awt.Color(102, 102, 102));
+        } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfNuevaCantidad.setBackground(Color.red);
+        }
+
+        try {
+            Double.parseDouble(tfNuevoPP.getText());
+            tfNuevoPP.setBackground(new java.awt.Color(102, 102, 102));
+        } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfNuevoPP.setBackground(Color.red);
+
+        }
+
+        try {
+            Double.parseDouble(tfNuevoPPU.getText());
+            tfNuevoPPU.setBackground(new java.awt.Color(102, 102, 102));
+        } catch (NumberFormatException eParse) {
+            datosCorrectos = false;
+            tfNuevoPPU.setBackground(Color.red);
+
+        }
+
+        if (datosCorrectos) {
+
+            nuevoProd[0] = lbUltimoID.getText();
+            nuevoProd[1] = tfNuevoNombre.getText();
+            nuevoProd[2] = tfNuevaCantidad.getText();
+            nuevoProd[3] = tfNuevoPP.getText();
+            nuevoProd[4] = tfNuevoPPU.getText();
+            nuevoProd[5] = cbNuevoCategoria.getSelectedItem().toString();
+        }
+
+        System.out.println("insert into producto values (" + nuevoProd[0] + ","
+                + "'" + nuevoProd[1] + "'," + nuevoProd[2] + "," + nuevoProd[3] + "," + nuevoProd[4] + ",'" + nuevoProd[5] + "');");
+        int afectadas = MySQL.ejecutaConsultaAccion("insert into producto values (" + nuevoProd[0] + ","
+                + "'" + nuevoProd[1] + "'," + nuevoProd[2] + "," + nuevoProd[3] + "," + nuevoProd[4] + ",'" + nuevoProd[5] + "');");
+        System.out.println("Insercion: " + afectadas + " filas afectadas");
+        if (afectadas >= 1) {
+            datos = MySQL.getDatos("select idProducto from Producto order by idProducto;");
+            MySQL.cierraRs();
+            int ultimoId = Integer.parseInt(datos[datos.length - 1][0].toString()) + 1;
+            lbUltimoID.setText(String.valueOf(ultimoId));
+            
+            
+            tfNuevoNombre.setText("...");
+            tfNuevaCantidad.setText("...");
+            tfNuevoPP.setText("...");
+            tfNuevoPPU.setText("...");
+            
+            
+            
+        }
+
+
+    }//GEN-LAST:event_btRegistraActionPerformed
+
+    private void pnTabsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnTabsMouseClicked
+        // TODO add your handling code here:
+        datos = MySQL.getDatos("select idProducto from Producto order by idProducto;");
+        MySQL.cierraRs();
+        int ultimoId = Integer.parseInt(datos[datos.length - 1][0].toString()) + 1;
+        lbUltimoID.setText(String.valueOf(ultimoId));
+    }//GEN-LAST:event_pnTabsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -810,10 +899,10 @@ public class ManejarStock extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FrameDrag;
     private javax.swing.JButton btActualiza;
-    private javax.swing.JButton btActualiza1;
+    private javax.swing.JButton btRegistra;
     private javax.swing.JComboBox<String> cbCategoria;
-    private javax.swing.JComboBox<String> cbCategoria1;
     private javax.swing.JComboBox<String> cbIds;
+    private javax.swing.JComboBox<String> cbNuevoCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -847,12 +936,12 @@ public class ManejarStock extends javax.swing.JDialog {
     private javax.swing.JPanel pnNuevo;
     private javax.swing.JTabbedPane pnTabs;
     private javax.swing.JTextField tfCantidad;
-    private javax.swing.JTextField tfCantidad1;
     private javax.swing.JTextField tfNombre;
-    private javax.swing.JTextField tfNombre1;
+    private javax.swing.JTextField tfNuevaCantidad;
+    private javax.swing.JTextField tfNuevoNombre;
+    private javax.swing.JTextField tfNuevoPP;
+    private javax.swing.JTextField tfNuevoPPU;
     private javax.swing.JTextField tfPP;
-    private javax.swing.JTextField tfPP1;
     private javax.swing.JTextField tfPVP;
-    private javax.swing.JTextField tfPVP1;
     // End of variables declaration//GEN-END:variables
 }
