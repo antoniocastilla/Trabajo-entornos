@@ -83,6 +83,41 @@ public class CatalogoAlv2 extends JDialog {
                 CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
             }
         });
+        compra.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[][] datos = MySQL.getDatos("select idProducto,cantidad from producto;");
+                MySQL.cierraRs();
+                for (int i = 0; i < carro.size(); i++) {
+                    for (int j = 0; j < datos.length; j++) {
+                        if (carro.get(i).getId() == (int)datos[j][0] ) {
+                            if ((int)datos[j][1]-carro.get(i).getUnidades() < 0) {
+                                JOptionPane.showMessageDialog(null, "No existen ese numero de unidades en la tienda de:  \n"+carro.get(i).getNombre()+" "
+                                        + "\nSolo quedan: "+datos[j][i]+" "
+                                        + "\nHas seleccionado: "+carro.get(i).getUnidades(), "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+                        }
+                        
+                    }
+                }
+                
+//                for (int i = 0; i < carro.size(); i++) {
+//                    for (int j = 0; j < datos.length; j++) {
+//                        if (carro.get(i).getId() == (int)datos[j][0] ) {
+//                            int cantidad = (int)datos[j][1] - carro.get(i).getUnidades();
+//                            int afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad = "+cantidad+" where idProducto = "+datos[j][0]+";");
+//                            System.out.println("Cantidad filas afectadas: " + afectadas);
+//                        }
+//                    }
+//                }
+                if (carro.isEmpty()) {
+                    
+                }else{
+                new VentanaFactura(carro, Double.parseDouble(total.getText().substring(6)));
+                }
+            }
+        });
         FrameDrag.addMouseListener(new java.awt.event.MouseAdapter() {
 
             public void mousePressed(java.awt.event.MouseEvent evt) {
