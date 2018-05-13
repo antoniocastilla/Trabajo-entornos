@@ -730,6 +730,7 @@ public class ManejarStock extends javax.swing.JDialog {
 
             if (datosInsertar[2].toString().compareToIgnoreCase(datosComparar[0][2].toString()) != 0) {
                 System.out.println("Cantidad diferente");
+
                 int afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad =" + datosInsertar[2] + " where idProducto =" + datosInsertar[0] + ";");
                 System.out.println("Cantidad filas afectadas: " + afectadas);
             }
@@ -752,6 +753,15 @@ public class ManejarStock extends javax.swing.JDialog {
                 System.out.println("Nombre filas afectadas: " + afectadas);
             }
 
+            if (Integer.parseInt(datosComparar[0][2].toString()) != Integer.parseInt(datosInsertar[2].toString())) {
+                int diferencia = Integer.parseInt(datosInsertar[2].toString()) - Integer.parseInt(datosComparar[0][2].toString());
+                double dineroDiferencia = diferencia * Double.parseDouble(datosInsertar[3].toString());//diferencia*pp
+                double ultimaCantidad = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
+                MySQL.cierraRs();
+                double ultimaCantidadActualizada = ultimaCantidad - dineroDiferencia;
+                MySQL.ejecutaConsultaAccion("insert into fondo values (" + ultimaCantidadActualizada + ");");
+
+            }
             System.out.println("todo ok");
         }
 
@@ -828,19 +838,24 @@ public class ManejarStock extends javax.swing.JDialog {
                 + "'" + nuevoProd[1] + "'," + nuevoProd[2] + "," + nuevoProd[3] + "," + nuevoProd[4] + ",'" + nuevoProd[5] + "');");
         System.out.println("Insercion: " + afectadas + " filas afectadas");
         if (afectadas >= 1) {
+
+            int diferencia = Integer.parseInt(tfNuevaCantidad.getText());
+            double dineroDiferencia = diferencia * Double.parseDouble(tfNuevoPP.getText());//diferencia*pp
+            double ultimaCantidad = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
+            MySQL.cierraRs();
+            double ultimaCantidadActualizada = ultimaCantidad - dineroDiferencia;
+            MySQL.ejecutaConsultaAccion("insert into fondo values (" + ultimaCantidadActualizada + ");");
+
             datos = MySQL.getDatos("select idProducto from Producto order by idProducto;");
             MySQL.cierraRs();
             int ultimoId = Integer.parseInt(datos[datos.length - 1][0].toString()) + 1;
             lbUltimoID.setText(String.valueOf(ultimoId));
-            
-            
+
             tfNuevoNombre.setText("...");
             tfNuevaCantidad.setText("...");
             tfNuevoPP.setText("...");
             tfNuevoPPU.setText("...");
-            
-            
-            
+
         }
 
 

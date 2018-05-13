@@ -277,6 +277,25 @@ public class MySQL {
 
         return datos;
     }
+        public static Object getUltimoDatoIndividual(String sql) {
+
+        Object dato = null;
+        int nFila = 0;
+
+        try {
+            
+            rs = stmt.executeQuery(sql);
+            meta = rs.getMetaData();
+            rs.last();
+            nFila = rs.getRow();
+            dato = rs.getObject(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dato;
+    }
+    
 
     public Object[] getFilaDatos() {
 
