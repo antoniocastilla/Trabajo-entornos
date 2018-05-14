@@ -66,10 +66,12 @@ public class VentanaFactura extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
-        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(55, 59, 114));
 
         jLabel1.setBackground(new java.awt.Color(102, 102, 102));
+        jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 204, 204));
         jLabel1.setText(" Factura");
         jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -83,9 +85,12 @@ public class VentanaFactura extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setBackground(new java.awt.Color(198, 198, 198));
+        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(204, 204, 204));
         jTextArea1.setRows(5);
+        jTextArea1.setBorder(null);
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
@@ -116,9 +121,10 @@ public class VentanaFactura extends javax.swing.JDialog {
             }
         });
 
-        jTextField1.setBackground(new java.awt.Color(153, 153, 153));
+        jTextField1.setBackground(new java.awt.Color(102, 102, 102));
         jTextField1.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextField1.setBorder(null);
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
@@ -188,8 +194,8 @@ public class VentanaFactura extends javax.swing.JDialog {
                 .addGap(40, 40, 40))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 411, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 449, Short.MAX_VALUE)
                     .addComponent(jLabel2)
                     .addContainerGap()))
         );
