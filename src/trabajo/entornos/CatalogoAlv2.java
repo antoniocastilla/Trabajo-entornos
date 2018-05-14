@@ -114,6 +114,7 @@ public class CatalogoAlv2 extends JDialog {
                 if (carro.isEmpty()) {
                     
                 }else{
+                
                 new VentanaFactura(carro, Double.parseDouble(total.getText().substring(6)));
                 }
             }

@@ -5,8 +5,13 @@
  */
 package trabajo.entornos;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -16,14 +21,21 @@ import javax.swing.WindowConstants;
 public class VentanaFactura extends javax.swing.JDialog {
 
     private ArrayList<Producto> alp = new ArrayList<Producto>();
-    double total;
-    
+    private double total, pago, vuelta;
+
     public VentanaFactura(ArrayList<Producto> alp, double total) {
         this.alp = alp;
-        this.total = total;
+        this.total = this.dameTruncado(total);
         initComponents();
         MySQL.conecta("pepe", "pepa");
-        
+        String s = "Productos: " + "\n";
+        for (int i = 0; i < alp.size(); i++) {
+            s += alp.get(i).toString() + "\n";
+        }
+        s += "Total compra: " + total;
+        jTextArea1.setText(s);
+        jButton1.setEnabled(false);
+
         this.setVisible(true);
         this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
     }
@@ -55,10 +67,25 @@ public class VentanaFactura extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Imprimir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Volver");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Pagar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,21 +94,18 @@ public class VentanaFactura extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton1)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton2)
-                            .addGap(36, 36, 36))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
-                    .addComponent(jLabel2))
-                .addContainerGap(44, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,14 +113,14 @@ public class VentanaFactura extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(30, 30, 30))
         );
@@ -104,8 +128,71 @@ public class VentanaFactura extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        pago = Double.parseDouble(jTextField1.getText());
+        vuelta = pago - total;
+        if (vuelta < 0) {
+            JOptionPane.showMessageDialog(null, "Ha pagado menos dinero de lo que vale el total de la compra, intentelo de nuevo", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        jTextArea1.setText(jTextArea1.getText() + "\nPago: " + pago + "€\nVuelta: " + vuelta + "€");
 
-    
+        Object dato = MySQL.getUltimoDatoIndividual("select idTicket from ticket;");
+        int idTicket;
+
+        idTicket = (int) dato + 1;
+        System.out.println(idTicket);
+        int afectadas;
+        int linea = 1;
+        for (int i = 0; i < alp.size(); i++) {
+            afectadas = MySQL.ejecutaConsultaAccion("insert into linea values(" + idTicket + ", "
+                    + linea + ", " + alp.get(i).getId() + ", " + alp.get(i).getPpu() + ", " + alp.get(i).getUnidades()
+                    + ", " + (alp.get(i).getUnidades() * alp.get(i).getUnidades()) + ");");
+            linea++;
+            System.out.println("Filas afectadas: " + afectadas);
+        }
+        afectadas = MySQL.ejecutaConsultaAccion("insert into ticket values(" + idTicket + ", " + total + ", " + pago + ", " + vuelta + ", " + "'" + LocalDate.now() + "');");
+        System.out.println("Filas afectadas: " + afectadas);
+        Object[][] datos = MySQL.getDatos("select idProducto,cantidad from producto;");
+        MySQL.cierraRs();
+        for (int i = 0; i < alp.size(); i++) {
+            for (int j = 0; j < datos.length; j++) {
+                if (alp.get(i).getId() == (int) datos[j][0]) {
+                    int cantidad = (int) datos[j][1] - alp.get(i).getUnidades();
+                    afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad = " + cantidad + " where idProducto = " + datos[j][0] + ";");
+                    System.out.println("Cantidad filas afectadas: " + afectadas);
+                }
+            }
+        }
+        double nFondo = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
+        double fondo = nFondo + total;
+        MySQL.ejecutaConsultaAccion("insert into fondo values (" + fondo + ");");
+        MySQL.cierraRs();
+        jButton1.setEnabled(true);
+        jButton3.setEnabled(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintable(new Printer(alp, total, pago, vuelta));
+        if (job.printDialog()) {
+            try{
+               job.print();
+            }catch(PrinterException e){
+                
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        VentanaFactura.this.setVisible(false);
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+    private double dameTruncado(double totalSinTruncar) {
+        return (double) Math.round(totalSinTruncar * 100d) / 100d;
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
