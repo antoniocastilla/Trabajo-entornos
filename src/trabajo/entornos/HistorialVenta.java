@@ -411,7 +411,7 @@ public class HistorialVenta extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (!productos.isEmpty()) {
             PrinterJob job = PrinterJob.getPrinterJob();
-            job.setPrintable(new Printer(productos, total, pagado, vuelta));
+            job.setPrintable(new Printer(productos, total, pagado, vuelta, Integer.parseInt(cbIds.getSelectedItem().toString())));
             if (job.printDialog()) {
                 try {
                     job.print();

@@ -18,7 +18,7 @@ public class CatalogoAlv2 extends JDialog {
     private int xMouse;
     private int yMouse;
     private JTextArea jt1;
-    private JButton compra, carrito, volver;
+    private JButton compra, carrito;
     private MySQL db;
     private JTable jTabla1;
     private JScrollPane jScrollPanel1, jScrollPanel2;
@@ -52,7 +52,6 @@ public class CatalogoAlv2 extends JDialog {
         jt1.setEditable(false);
         compra = new JButton("Compra");
         carrito = new JButton("Ver carrito");
-        volver = new JButton("Volver");
         jTabla1 = new javax.swing.JTable();
         jScrollPanel1 = new javax.swing.JScrollPane(jTabla1);
         pnCarrito = new JPanel();
@@ -66,6 +65,9 @@ public class CatalogoAlv2 extends JDialog {
         carro = new ArrayList<Producto>();
         //labels = new JLabel[3];
         total = new JLabel("Total: 0");
+        total.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
+        total.setForeground(new java.awt.Color(204, 204, 204));
+        
         posiciones = new ArrayList<Integer>();
 
         //FrameDrag y Cierre
@@ -83,7 +85,7 @@ public class CatalogoAlv2 extends JDialog {
             }
         });
         compra.setBackground(new java.awt.Color(102, 102, 102));
-        compra.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        compra.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
         compra.setForeground(new java.awt.Color(204, 204, 204));
         compra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/comprar.png")));
         compra.setBorderPainted(false);
@@ -103,7 +105,8 @@ public class CatalogoAlv2 extends JDialog {
                             if ((int)datos[j][1]-carro.get(i).getUnidades() < 0) {
                                 JOptionPane.showMessageDialog(null, "No existen ese numero de unidades en la tienda de:  \n"+carro.get(i).getNombre()+" "
                                         + "\nSolo quedan: "+datos[j][i]+" "
-                                        + "\nHas seleccionado: "+carro.get(i).getUnidades(), "Error", JOptionPane.ERROR_MESSAGE);
+                                        + "\nHas seleccionado: "+carro.get(i).getUnidades()+""
+                                        + "\nPara quitar unidades, haz click sobre ellas con el botón derecho.", "Error", JOptionPane.ERROR_MESSAGE);
                                 return;
                             }
                         }
@@ -146,15 +149,13 @@ public class CatalogoAlv2 extends JDialog {
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
         jTabla1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        compra.setBounds(30, 500, 120, 120);
-        volver.setBounds(120, 570, 100, 40);
-        total.setBounds(650, 600, 100, 40);
+        compra.setBounds(500, 530, 120, 120);
+        total.setBounds(750, 600, 180, 40);
         this.setUndecorated(true);
 
         this.add(pnContenedor);
         pnContenedor.add(compra);
         pnContenedor.add(carrito);
-        pnContenedor.add(volver);
         pnContenedor.add(jScrollPanel1);
         pnContenedor.add(jScrollPanel2);
         pnContenedor.add(total);
@@ -163,11 +164,14 @@ public class CatalogoAlv2 extends JDialog {
 
         //Panel del Carrito
         JLabel lbProducto = new JLabel("Producto");
-        lbProducto.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+        lbProducto.setFont(new java.awt.Font("Helvetica Neue", 0, 18));
+        lbProducto.setForeground(new java.awt.Color(255, 255, 255));
         JLabel lbUnid = new JLabel("Unidades");
-        lbUnid.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+        lbUnid.setFont(new java.awt.Font("Helvetica Neue", 0, 18));
+        lbUnid.setForeground(new java.awt.Color(255, 255, 255));
         JLabel lbDinero = new JLabel("Dinero");
-        lbDinero.setFont(new java.awt.Font("Helvetica Neue", 0, 14));
+        lbDinero.setFont(new java.awt.Font("Helvetica Neue", 0, 18));
+        lbDinero.setForeground(new java.awt.Color(255, 255, 255));
 
         pnCarrito.add(lbProducto);
         pnCarrito.add(lbUnid);
@@ -175,20 +179,12 @@ public class CatalogoAlv2 extends JDialog {
 
         lbProducto.setBounds(x1 - 10, y1, 80, 20);
         x1 += aumentoX1;
-        lbUnid.setBounds(x1 + 80, y1, 80, 20);
+        lbUnid.setBounds(x1 + 60, y1, 80, 20);
         x1 += aumentoX1;
         lbDinero.setBounds(x1 + 80, y1, 80, 20);
         x1 = x0;
         posiciones.add(y1);
         y1 += aumentoY;
-
-        volver.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CatalogoAlv2.this.setVisible(false);
-
-            }
-        });
 
         jTabla1.setEnabled(false);
         jTabla1.addMouseListener(new MouseAdapter() {
