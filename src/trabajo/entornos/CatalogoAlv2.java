@@ -33,7 +33,6 @@ public class CatalogoAlv2 extends JDialog {
     private int aumentoX1 = 75;
     private int aumentoX2 = 110;
     private int aumentoY = 40;
-    //private JLabel[] labels;
     private JLabel total;
     private int altoSizeCarrito = 170;
     private ArrayList<Integer> posiciones;
@@ -83,6 +82,16 @@ public class CatalogoAlv2 extends JDialog {
                 CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
             }
         });
+        compra.setBackground(new java.awt.Color(102, 102, 102));
+        compra.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        compra.setForeground(new java.awt.Color(204, 204, 204));
+        compra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/comprar.png")));
+        compra.setBorderPainted(false);
+        compra.setVerticalTextPosition(SwingConstants.BOTTOM);
+        compra.setHorizontalTextPosition(SwingConstants.CENTER);
+        compra.setBorder(null);
+        compra.setContentAreaFilled(false);
+        compra.setToolTipText("Añade articulos clickando sobre ellos. Si quieres quitarlos, pulsa con botón derecho sobre el carrito");
         compra.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,16 +110,7 @@ public class CatalogoAlv2 extends JDialog {
                         
                     }
                 }
-                
-//                for (int i = 0; i < carro.size(); i++) {
-//                    for (int j = 0; j < datos.length; j++) {
-//                        if (carro.get(i).getId() == (int)datos[j][0] ) {
-//                            int cantidad = (int)datos[j][1] - carro.get(i).getUnidades();
-//                            int afectadas = MySQL.ejecutaConsultaAccion("update producto set cantidad = "+cantidad+" where idProducto = "+datos[j][0]+";");
-//                            System.out.println("Cantidad filas afectadas: " + afectadas);
-//                        }
-//                    }
-//                }
+
                 if (carro.isEmpty()) {
                     
                 }else{
@@ -146,8 +146,8 @@ public class CatalogoAlv2 extends JDialog {
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
         jTabla1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        compra.setBounds(20, 600, 100, 40);
-        volver.setBounds(120, 600, 100, 40);
+        compra.setBounds(30, 500, 120, 120);
+        volver.setBounds(120, 570, 100, 40);
         total.setBounds(650, 600, 100, 40);
         this.setUndecorated(true);
 
@@ -203,28 +203,17 @@ public class CatalogoAlv2 extends JDialog {
                         productoAux[i] = jTabla1.getModel().getValueAt(row, i).toString();
                         //System.out.println(productoAux[i]);
                     }
-
-//                while (alEtiquetas.size() != 0){
-//                System.out.println("PRIMER OBJETO DEL ARRAY ETIQUETAS: "+alEtiquetas.get(0)[0].getText());
-//                System.out.println("PRIMER OBJETO DEL ARRAY ETIQUETAS: "+alEtiquetas.get(0)[1].getText());
-//                System.out.println("PRIMER OBJETO DEL ARRAY ETIQUETAS: "+alEtiquetas.get(0)[2].getText());
-//                break;
-//                }
                     int posicionAuxCarro = encuentraProducto(productoAux);
 
                     if (posicionAuxCarro != -1) {
 
-                        //System.out.println("productoAux[0]= " + productoAux[0] + "==carro.get(id).getId()=" + carro.get(posicionAuxCarro).getId());
                         carro.get(posicionAuxCarro).setUnidades(carro.get(posicionAuxCarro).getUnidades() + 1);
 
                         if (carro.get(posicionAuxCarro).getNombre().compareToIgnoreCase(alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].getText()) == 0) {
-//                        System.out.println(carro.get(posicionAuxCarro).getNombre() + " es igual a == " + alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].getText());
-
                             alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText(String.valueOf(carro.get(posicionAuxCarro).getUnidades()));
                             alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText(String.valueOf(dameTruncado((carro.get(posicionAuxCarro).getUnidades() * carro.get(posicionAuxCarro).getPpu()))));
                             double ppuAux = carro.get(posicionAuxCarro).getPpu();
                             total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) + ppuAux)));
-
                         }
 
                     } else {
@@ -232,7 +221,6 @@ public class CatalogoAlv2 extends JDialog {
                             y1 += aumentoY;
                         }
                         JLabel[] labels = new JLabel[3];
-//                    System.out.println("ha entrao");
                         meteCarrito(productoAux);
                         JLabel jlAux = new JLabel(carro.get(carro.size() - 1).getNombre());
                         jlAux.setToolTipText("Click con el botón derecho para quitar producto");
@@ -301,20 +289,12 @@ public class CatalogoAlv2 extends JDialog {
 
                         double auxD = carro.get(carro.size() - 1).getPpu();
                         total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) + auxD)));
-                        //total.setBounds(x0, y1 + 30, 200, 20);
                         aumentaTamañoCarrito();
                     }
                 }
-
-//                System.out.println("==toString completo de ArrayList Carro: ===");
-//                for (Producto x : carro) {
-//                    System.out.println(x.toString());
-//                }
-//                jTabla1.clearSelection();
             }
         });
 
-        //Más FrameDrag
         this.setTitle("Papelería - Catálogo");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(1000, 700);
@@ -332,12 +312,6 @@ public class CatalogoAlv2 extends JDialog {
                 + "ppu,categoria  from producto;");
         Object[] cabecera = MySQL.getCabecera();
 
-//        for (int i = 0; i < datos.length; i++) {
-//            for (int j = 0; j < datos[i].length; j++) {
-//                System.out.print(datos[i][j] + ",");
-//            }
-//            System.out.println("\n");
-//        }
         JComboBox<String> cbCategorias = new JComboBox<String>();
         for (String x : MySQL.dameCategorias()) {
             cbCategorias.addItem(x);
@@ -352,11 +326,6 @@ public class CatalogoAlv2 extends JDialog {
         };
 
         jTabla1.setModel(modelo);
-        //jTabla1.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(cbCategorias));
-        //jTabla1.getModel().addTableModelListener(eventomodelo);
-        //clases = MySQL.getClases(tabla);
-
-        //MySQL.cierra();
     }
 
     private void meteCarrito(String[] nuevoProducto) {
@@ -372,7 +341,6 @@ public class CatalogoAlv2 extends JDialog {
     private int encuentraProducto(String[] productoAux) {
 
         for (int i = 0; i < carro.size(); i++) {
-            //if (carro.get(i).getNombre().equals(s[1])) {
             if (Integer.parseInt(productoAux[0]) == carro.get(i).getId()) {
                 return i;
             }

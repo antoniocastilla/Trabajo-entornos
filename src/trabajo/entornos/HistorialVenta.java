@@ -9,10 +9,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +31,9 @@ public class HistorialVenta extends javax.swing.JDialog {
     ArrayList<Integer> meses;
     ArrayList<String> tickets;
     String ultimoSeleccionado;
+    ArrayList<Producto> productos;
+    int xMouse, yMouse;
+    double total, pagado, vuelta;
 
     /**
      * Creates new form HistorialVenta
@@ -46,7 +55,7 @@ public class HistorialVenta extends javax.swing.JDialog {
         }
 
         initComponents();
-
+        taFactura.setEditable(false);
         for (int x : años) {
             cbAños.addItem(String.valueOf(x));
         }
@@ -75,14 +84,30 @@ public class HistorialVenta extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         pnTicketsGrid = new javax.swing.JPanel();
         cbIds = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        taFactura = new javax.swing.JTextArea();
+        btGuardar = new javax.swing.JButton();
+        btImprimir = new javax.swing.JButton();
+        lbX = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         FrameDrag.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        FrameDrag.setForeground(new java.awt.Color(204, 204, 204));
+        FrameDrag.setForeground(new java.awt.Color(255, 255, 255));
         FrameDrag.setText("  Historial de Ventas");
+        FrameDrag.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                FrameDragMouseDragged(evt);
+            }
+        });
+        FrameDrag.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                FrameDragMousePressed(evt);
+            }
+        });
 
         jSeparator1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -128,18 +153,52 @@ public class HistorialVenta extends javax.swing.JDialog {
             }
         });
 
+        taFactura.setBackground(new java.awt.Color(153, 153, 153));
+        taFactura.setColumns(20);
+        taFactura.setForeground(new java.awt.Color(255, 255, 255));
+        taFactura.setRows(5);
+        jScrollPane2.setViewportView(taFactura);
+
+        btGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
+        btGuardar.setToolTipText("Guardar factura en disco");
+        btGuardar.setBorderPainted(false);
+        btGuardar.setContentAreaFilled(false);
+        btGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btGuardarActionPerformed(evt);
+            }
+        });
+
+        btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/imprimir.png"))); // NOI18N
+        btImprimir.setToolTipText("Imprimir factura");
+        btImprimir.setBorderPainted(false);
+        btImprimir.setContentAreaFilled(false);
+        btImprimir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btImprimirMouseClicked(evt);
+            }
+        });
+
+        lbX.setBackground(new java.awt.Color(255, 255, 255));
+        lbX.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lbX.setForeground(new java.awt.Color(255, 255, 255));
+        lbX.setText("   X");
+        lbX.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbXMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(FrameDrag, javax.swing.GroupLayout.PREFERRED_SIZE, 862, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 36, Short.MAX_VALUE))
+                .addComponent(FrameDrag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbX, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,15 +210,27 @@ public class HistorialVenta extends javax.swing.JDialog {
                         .addComponent(cbMeses, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbIds, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cbIds, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(FrameDrag, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FrameDrag, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbX, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -168,13 +239,25 @@ public class HistorialVenta extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(cbMeses)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbIds, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(53, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(cbIds, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btImprimir, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2)))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -208,7 +291,7 @@ public class HistorialVenta extends javax.swing.JDialog {
         for (int x : meses) {
             cbMeses.addItem(String.valueOf(x));
         }
-
+        cbIds.setSelectedIndex(-1);
 
     }//GEN-LAST:event_cbAñosItemStateChanged
 
@@ -243,8 +326,9 @@ public class HistorialVenta extends javax.swing.JDialog {
                 etiqueta.setForeground(Color.white);
                 etiqueta.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
-
+                        cbIds.removeAllItems();
                         Object[][] ticketsAux = MySQL.getDatos("select idTicket from ticket where fecha = '" + etiqueta.getText() + "';");
+                        MySQL.cierraRs();
                         llenaIds(ticketsAux);
 
                     }
@@ -260,6 +344,7 @@ public class HistorialVenta extends javax.swing.JDialog {
             }
             pnTicketsGrid.setVisible(false);
             pnTicketsGrid.setVisible(true);
+            cbIds.setSelectedIndex(-1);
 
         } catch (Exception e) {
 
@@ -274,7 +359,121 @@ public class HistorialVenta extends javax.swing.JDialog {
 
     private void cbIdsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbIdsItemStateChanged
         // TODO add your handling code here:
+        Object[][] lineas = MySQL.getDatos("select idTicket, linea, idProducto, "
+                + "ppu, cantidad, linea total"
+                + " from linea where idTicket = " + cbIds.getSelectedItem() + ";");
+        MySQL.cierraRs();
+        productos = creaALProd(lineas);
+        String factura = "";
+
+        if (productos.isEmpty()) {
+            factura = "No hay lineas asociadas";
+            //desactivar boton imprimir
+            //desactivar boton guardar en archivo
+        } else {
+            Object[][] dinero = MySQL.getDatos("select total, pagado, vuelta,fecha from ticket where "
+                    + "idTicket = " + cbIds.getSelectedItem() + ";");
+            factura += "Fecha    '" + dinero[0][3] + "'\n\n";
+            for (Producto x : productos) {
+                factura += x.toString() + "\n";
+            }
+
+            MySQL.cierraRs();
+            total = Double.parseDouble(dinero[0][0].toString());
+            pagado = Double.parseDouble(dinero[0][1].toString());
+            vuelta = Double.parseDouble(dinero[0][2].toString());
+            factura += "\nTotal = " + total + "€\nPagado = " + pagado + "€\nVuelta = " + vuelta + "€";
+        }
+        taFactura.setText(factura);
     }//GEN-LAST:event_cbIdsItemStateChanged
+
+    private void lbXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbXMouseClicked
+        // TODO add your handling code here:
+        this.setVisible(false);
+
+    }//GEN-LAST:event_lbXMouseClicked
+
+    private void FrameDragMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragMousePressed
+        // TODO add your handling code here:
+        xMouse = evt.getX();
+        yMouse = evt.getY();
+    }//GEN-LAST:event_FrameDragMousePressed
+
+    private void FrameDragMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FrameDragMouseDragged
+        // TODO add your handling code here:
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+
+        this.setLocation(x - xMouse, y - yMouse);
+    }//GEN-LAST:event_FrameDragMouseDragged
+
+    private void btImprimirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btImprimirMouseClicked
+        // TODO add your handling code here:
+        if (!productos.isEmpty()) {
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPrintable(new Printer(productos, total, pagado, vuelta));
+            if (job.printDialog()) {
+                try {
+                    job.print();
+                } catch (PrinterException e) {
+
+                }
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay productos en la factura", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_btImprimirMouseClicked
+
+    private void btGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarActionPerformed
+        try {
+            // TODO add your handling code here:
+            IO.escribe(taFactura.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(HistorialVenta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "No se ha podido guardar en disco.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_btGuardarActionPerformed
+
+    /*
+    Del array bidimensional de LINEAS de ticket devuelve un ArrayList con los productos
+    para poder operar con el
+     */
+    private ArrayList<Producto> creaALProd(Object[][] lineas) {
+
+        ArrayList<Producto> productosAux = new ArrayList<Producto>();
+        for (int i = 0; i < lineas.length; i++) {
+
+//            int pos = contiene(Integer.parseInt(lineas[i][2].toString()));
+//            if ( pos == -1){
+            Producto prod = new Producto();
+            prod.setId(Integer.parseInt(lineas[i][2].toString()));
+            prod.setPpu(Double.parseDouble(lineas[i][3].toString()));
+            prod.setUnidades(Integer.parseInt(lineas[i][4].toString()));
+            prod.setNombre(MySQL.getDatos("select nombre from producto where idProducto = "
+                    + lineas[i][2].toString() + ";")[0][0].toString());
+            MySQL.cierraRs();
+            productosAux.add(prod);
+        }
+
+        return productosAux;
+    }
+
+    private int contiene(int idProducto) {
+
+        if (!productos.isEmpty()) {
+            for (int i = 0; i < productos.size(); i++) {
+                if (productos.get(i).getId() == idProducto) {
+                    return i;
+                }
+            }
+
+        }
+
+        return -1;
+    }
 
     private void llenaIds(Object[][] datos) {
         for (int i = 0; i < datos.length; i++) {
@@ -328,6 +527,8 @@ public class HistorialVenta extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FrameDrag;
+    private javax.swing.JButton btGuardar;
+    private javax.swing.JButton btImprimir;
     private javax.swing.JComboBox<String> cbAños;
     private javax.swing.JComboBox<String> cbIds;
     private javax.swing.JComboBox<String> cbMeses;
@@ -335,7 +536,10 @@ public class HistorialVenta extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbX;
     private javax.swing.JPanel pnTicketsGrid;
+    private javax.swing.JTextArea taFactura;
     // End of variables declaration//GEN-END:variables
 }

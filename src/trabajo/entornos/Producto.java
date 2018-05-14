@@ -42,7 +42,7 @@ public class Producto {
     }
 
     public String toString(){
-        return nombre+"\t\tUnidades: "+unidades+"\tTotal: "+ppu*unidades;
+        return nombre+"\n---Unidades: "+unidades+"\n---Total: "+ppu*unidades+"\n_________________________";
     }
     
     public String getNombre() {
@@ -76,5 +76,6 @@ public class Producto {
     public void setFilaCarrito(int filaCarrito) {
         this.filaCarrito = filaCarrito;
     }
+    
     
 }
