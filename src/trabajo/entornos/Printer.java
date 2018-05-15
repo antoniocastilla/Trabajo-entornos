@@ -68,9 +68,9 @@ public class Printer implements Printable {
             x += 20;
             g.drawString("Unidades: " + alp.get(i).getUnidades(), x, y);
             x += 200;
-            g.drawString("PPU: " + alp.get(i).getPpu(), x, y);
+            g.drawString("PPU: " + dameTruncado(alp.get(i).getPpu()), x, y);
             x += 200;
-            g.drawString("Total: " + (alp.get(i).getUnidades() * alp.get(i).getPpu()), x, y);
+            g.drawString("Total: " + dameTruncado((alp.get(i).getUnidades() * alp.get(i).getPpu())), x, y);
             x = x0;
             y += iY;
         }
@@ -85,6 +85,11 @@ public class Printer implements Printable {
         g.drawString("Fecha: " + f1.toString(), x, y);
 
         return PAGE_EXISTS;
+    }
+    
+    private double dameTruncado(double totalSinTruncar) {
+        return (double) Math.round(totalSinTruncar * 100d) / 100d;
+
     }
 
 }

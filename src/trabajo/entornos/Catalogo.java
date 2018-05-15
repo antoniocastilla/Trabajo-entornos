@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class CatalogoAlv2 extends JDialog {
+public class Catalogo extends JDialog {
 
     private int xMouse;
     private int yMouse;
@@ -42,7 +42,7 @@ public class CatalogoAlv2 extends JDialog {
     private JLabel FrameDrag;
     private JLabel lbX;
 
-    public CatalogoAlv2() {
+    public Catalogo() {
 
         this.setLayout(null);
         this.setBackground(new java.awt.Color(83, 94, 165));
@@ -83,7 +83,7 @@ public class CatalogoAlv2 extends JDialog {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 int x = evt.getXOnScreen();
                 int y = evt.getYOnScreen();
-                CatalogoAlv2.this.setLocation(x - xMouse, y - yMouse);
+                Catalogo.this.setLocation(x - xMouse, y - yMouse);
             }
         });
         compra.setBackground(new java.awt.Color(102, 102, 102));
@@ -137,7 +137,7 @@ public class CatalogoAlv2 extends JDialog {
         lbX.setForeground(new java.awt.Color(255, 255, 255));
         lbX.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                CatalogoAlv2.this.setVisible(false);
+                Catalogo.this.setVisible(false);
             }
         });
         limpiaCarrito.setBackground(new java.awt.Color(102, 102, 102));
@@ -153,8 +153,8 @@ public class CatalogoAlv2 extends JDialog {
         limpiaCarrito.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CatalogoAlv2().setLocationRelativeTo(null);
-                CatalogoAlv2.this.setVisible(false);
+                new Catalogo().setLocationRelativeTo(null);
+                Catalogo.this.setVisible(false);
             }
         });
         

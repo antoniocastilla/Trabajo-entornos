@@ -180,7 +180,7 @@ public class Inicio extends javax.swing.JFrame {
         //new Catalogo2(this,true);
         //new Catalogo();
         //new CatalogoAlv();
-        new CatalogoAlv2();
+        new Catalogo();
         
     }//GEN-LAST:event_btCatalogoActionPerformed
 
