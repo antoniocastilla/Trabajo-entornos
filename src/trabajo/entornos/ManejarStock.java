@@ -715,7 +715,7 @@ public class ManejarStock extends javax.swing.JDialog {
         Object [] [] datosProducto = MySQL.getDatos("select nombre, cantidad from producto where nombre = '"+tfNombre.getText()+"';");
         cant1 = Integer.parseInt(tfCantidad.getText()) - Integer.parseInt(datosProducto[0][1].toString());
         double datoFondo = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
-        if ((Double.parseDouble(tfPVP.getText()) * cant1) > datoFondo) {
+        if ((Double.parseDouble(tfPP.getText()) * cant1) > datoFondo) {
             JOptionPane.showMessageDialog(null, "No hay tanto dinero en la tienda", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -832,9 +832,12 @@ public class ManejarStock extends javax.swing.JDialog {
 
         }
         double datoFondo = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
-
-        if ((Double.parseDouble(tfPVP.getText()) * Integer.parseInt(tfCantidad.getText())) > datoFondo) {
-            JOptionPane.showMessageDialog(null, "No hay tanto dinero en la tienda", "Error", JOptionPane.ERROR_MESSAGE);
+        double precioAux = Double.parseDouble(tfNuevoPP.getText());
+        System.out.println("tfPP: " + tfNuevoPP.getText());
+        System.out.println("tfCantidad: " + tfNuevaCantidad.getText());
+        System.out.println("TOTAL xd:" + Double.parseDouble(tfNuevoPP.getText()) * Integer.parseInt(tfNuevaCantidad.getText()));
+        if ((precioAux * Integer.parseInt(tfNuevaCantidad.getText())) > datoFondo) {
+            JOptionPane.showMessageDialog(null, "No hay tanto dinero en la tienda\nHacen falta: "+((Double.parseDouble(tfNuevoPP.getText()) * Integer.parseInt(tfNuevaCantidad.getText()))-datoFondo)+"€", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (datosCorrectos) {

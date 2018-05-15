@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -315,11 +316,13 @@ public class HistorialVenta extends javax.swing.JDialog {
             cbMeses.addItem(String.valueOf(x));
         }
         cbIds.setSelectedIndex(-1);
+        cbIds.setEnabled(false);
 
     }//GEN-LAST:event_cbAñosItemStateChanged
 
     private void cbMesesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbMesesItemStateChanged
         // TODO add your handling code here:
+        cbIds.setEnabled(false);
         tickets = new ArrayList<String>();
         String ult = "";
         try {
@@ -353,7 +356,7 @@ public class HistorialVenta extends javax.swing.JDialog {
                         Object[][] ticketsAux = MySQL.getDatos("select idTicket from ticket where fecha = '" + etiqueta.getText() + "';");
                         MySQL.cierraRs();
                         llenaIds(ticketsAux);
-
+                        cbIds.setEnabled(true);
                     }
                 });
                 pnTicketsGrid.add(etiqueta);
@@ -453,9 +456,8 @@ public class HistorialVenta extends javax.swing.JDialog {
         try {
             // TODO add your handling code here:
             IO.escribe(taFactura.getText());
-        } catch (IOException ex) {
-            Logger.getLogger(HistorialVenta.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "No se ha podido guardar en disco.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "No se ha guardado en disco.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
     }//GEN-LAST:event_btGuardarActionPerformed

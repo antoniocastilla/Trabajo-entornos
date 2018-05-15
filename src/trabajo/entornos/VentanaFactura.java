@@ -225,6 +225,7 @@ public class VentanaFactura extends javax.swing.JDialog {
         }
         jTextField1.setBackground(new Color(102,102,102));
         vuelta = pago - total;
+        vuelta = dameTruncado(vuelta);
         if (vuelta < 0) {
             JOptionPane.showMessageDialog(null, "Ha pagado menos dinero de lo que vale el total de la compra, intentelo de nuevo", "Error", JOptionPane.ERROR_MESSAGE);
             return;
