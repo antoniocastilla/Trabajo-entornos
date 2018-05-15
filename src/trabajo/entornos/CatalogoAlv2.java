@@ -18,7 +18,7 @@ public class CatalogoAlv2 extends JDialog {
     private int xMouse;
     private int yMouse;
     private JTextArea jt1;
-    private JButton compra, carrito, volver;
+    private JButton compra, carrito, volver, limpiaCarrito;
     private MySQL db;
     private JTable jTabla1;
     private JScrollPane jScrollPanel1, jScrollPanel2;
@@ -53,6 +53,7 @@ public class CatalogoAlv2 extends JDialog {
         jt1.setEditable(false);
         compra = new JButton("Compra");
         carrito = new JButton("Ver carrito");
+        limpiaCarrito = new JButton("Limpiar carrito");
         jTabla1 = new javax.swing.JTable();
         jScrollPanel1 = new javax.swing.JScrollPane(jTabla1);
         pnCarrito = new JPanel();
@@ -139,6 +140,23 @@ public class CatalogoAlv2 extends JDialog {
                 CatalogoAlv2.this.setVisible(false);
             }
         });
+        limpiaCarrito.setBackground(new java.awt.Color(102, 102, 102));
+        limpiaCarrito.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
+        limpiaCarrito.setForeground(new java.awt.Color(204, 204, 204));
+        limpiaCarrito.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/limpia.png")));
+        limpiaCarrito.setBorderPainted(false);
+        limpiaCarrito.setVerticalTextPosition(SwingConstants.BOTTOM);
+        limpiaCarrito.setHorizontalTextPosition(SwingConstants.CENTER);
+        limpiaCarrito.setBorder(null);
+        limpiaCarrito.setContentAreaFilled(false);
+        limpiaCarrito.setToolTipText("Limpia el carrito");
+        limpiaCarrito.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CatalogoAlv2().setLocationRelativeTo(null);
+                CatalogoAlv2.this.setVisible(false);
+            }
+        });
         
         pnContenedor.add(FrameDrag);
         pnContenedor.add(lbX);
@@ -147,16 +165,18 @@ public class CatalogoAlv2 extends JDialog {
         pnContenedor.setBackground(new Color(102, 102, 102));
         pnContenedor.setBounds(0, 0, 1000, 700);
         pnCarrito.setBackground(new java.awt.Color(102, 102, 102));
+        compra.setBounds(350,530,120,120);
         jScrollPanel1.setBounds(30, 50, 600, 450);
         jScrollPanel2.setBounds(625, 50, 330, 450);
         jTabla1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        compra.setBounds(500, 530, 120, 120);
+        limpiaCarrito.setBounds(500, 530, 180, 120);
         total.setBounds(750, 600, 180, 40);
         this.setUndecorated(true);
 
         this.add(pnContenedor);
         pnContenedor.add(compra);
         pnContenedor.add(carrito);
+        pnContenedor.add(limpiaCarrito);
         pnContenedor.add(jScrollPanel1);
         pnContenedor.add(jScrollPanel2);
         pnContenedor.add(total);
@@ -291,7 +311,7 @@ public class CatalogoAlv2 extends JDialog {
                 }
             }
         });
-
+        
         this.setTitle("Papelería - Catálogo");
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setSize(1000, 700);

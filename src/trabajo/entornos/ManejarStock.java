@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +26,8 @@ public class ManejarStock extends javax.swing.JDialog {
     Object[][] datos;
     private Object[][] datosCat;
     private Object[][] datosPantalla;
+    private double cant1 = 0;
+
 
     /**
      * Creates new form ManejarStock
@@ -673,7 +676,7 @@ public class ManejarStock extends javax.swing.JDialog {
     }//GEN-LAST:event_cbIdsItemStateChanged
 
     private void btActualizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btActualizaActionPerformed
-        // TODO add your handling code here:
+
         Object[] datosInsertar = new Object[6];
         boolean datosCorrectos = true;
 
@@ -708,6 +711,13 @@ public class ManejarStock extends javax.swing.JDialog {
             datosCorrectos = false;
             tfPVP.setBackground(Color.red);
 
+        }
+        Object [] [] datosProducto = MySQL.getDatos("select nombre, cantidad from producto where nombre = '"+tfNombre.getText()+"';");
+        cant1 = Integer.parseInt(tfCantidad.getText()) - Integer.parseInt(datosProducto[0][1].toString());
+        double datoFondo = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
+        if ((Double.parseDouble(tfPVP.getText()) * cant1) > datoFondo) {
+            JOptionPane.showMessageDialog(null, "No hay tanto dinero en la tienda", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (datosCorrectos) {
@@ -821,7 +831,12 @@ public class ManejarStock extends javax.swing.JDialog {
             tfNuevoPPU.setBackground(Color.red);
 
         }
+        double datoFondo = Double.parseDouble(MySQL.getUltimoDatoIndividual("select * from fondo;").toString());
 
+        if ((Double.parseDouble(tfPVP.getText()) * Integer.parseInt(tfCantidad.getText())) > datoFondo) {
+            JOptionPane.showMessageDialog(null, "No hay tanto dinero en la tienda", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (datosCorrectos) {
 
             nuevoProd[0] = lbUltimoID.getText();
