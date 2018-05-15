@@ -61,9 +61,12 @@ public class VentanaFactura extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         jLabel1.setText("Factura:");
 
 =======
+=======
+>>>>>>> parent of 213d058... 99% por ciento del Proyecto
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         jLabel1.setBackground(new java.awt.Color(102, 102, 102));
@@ -81,6 +84,9 @@ public class VentanaFactura extends javax.swing.JDialog {
         });
 
         jTextArea1.setBackground(new java.awt.Color(198, 198, 198));
+<<<<<<< HEAD
+>>>>>>> parent of 213d058... 99% por ciento del Proyecto
+=======
 >>>>>>> parent of 213d058... 99% por ciento del Proyecto
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -108,7 +114,10 @@ public class VentanaFactura extends javax.swing.JDialog {
             }
         });
 
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 213d058... 99% por ciento del Proyecto
         jTextField1.setBackground(new java.awt.Color(153, 153, 153));
         jTextField1.setFont(new java.awt.Font("Helvetica Neue", 0, 21)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(255, 255, 255));
