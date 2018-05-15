@@ -15,23 +15,12 @@ public class Printer implements Printable{
     
     private ArrayList<Producto> alp = new ArrayList<Producto>();
     private double total, pago, vuelta;
-    private int idTicket;
     
     public Printer(ArrayList<Producto> alp, double total, double pago, double vuelta){
         this.alp = alp;
         this.total = total;
         this.pago = pago;
         this.vuelta = vuelta;
-        MySQL.conecta("pepe", "pepa");
-        
-    }
-    
-    public Printer(ArrayList<Producto> alp, double total, double pago, double vuelta, int idTicket){
-        this.alp = alp;
-        this.total = total;
-        this.pago = pago;
-        this.vuelta = vuelta;
-        this.idTicket = idTicket;
         MySQL.conecta("pepe", "pepa");
         
     }
@@ -48,10 +37,12 @@ public class Printer implements Printable{
         int y = 50;
         int x0 = 50;
         int iY = 20;
-        Object dato = MySQL.getUltimoDatoIndividual("select fecha from ticket;");
+        Object dato = MySQL.getUltimoDatoIndividual("select idTicket from ticket;");
+        int idTicket = (int)dato;
+        dato = MySQL.getUltimoDatoIndividual("select fecha from ticket;");
         Date f1 = (Date)dato;
         g.drawString("Factura: ", x, y);
-        g.drawString("TICKET Nº: "+idTicket, x+350, y);
+        g.drawString("IdTicket: "+idTicket, x+350, y);
         y+=iY;
         g.drawLine(x, y, x+500, y);
         y+=iY;
