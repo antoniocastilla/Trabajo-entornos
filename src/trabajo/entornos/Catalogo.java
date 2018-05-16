@@ -240,18 +240,24 @@ public class Catalogo extends JDialog {
                         JLabel[] labels = new JLabel[3];
                         meteCarrito(productoAux);
                         JLabel jlAux = new JLabel(carro.get(carro.size() - 1).getNombre());
+                        System.out.println(jlAux.getText());
                         jlAux.setToolTipText("Click con el botón derecho para quitar producto");
                         jlAux.addMouseListener(new MouseAdapter() {
                             public void mousePressed(MouseEvent mouseEvent) {
-                                int posicionAuxCarro = encuentraProducto(productoAux);
+                                System.out.println(jlAux.getText());
+                                int posicionAuxCarro = encuentraProducto(jlAux.getText());
                                 if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
                                     System.out.println("Botón derecho en la etiqueta");
                                     if (posicionAuxCarro == -1) {
 
                                     } else if (carro.get(posicionAuxCarro).getUnidades() == 1) {
+                                        System.out.println("he entrado??");
                                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].setText("");
                                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText("");
                                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText("");
+                                        alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[0].setVisible(false);
+                                        alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setVisible(false);
+                                        alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setVisible(false);
                                         alEtiquetas.remove(carro.get(posicionAuxCarro).getFilaCarrito());
                                         double ppuAux = carro.get(posicionAuxCarro).getPpu();
                                         total.setText("Total: " + String.valueOf(dameTruncado(Double.valueOf(total.getText().substring(6)) - ppuAux)));
@@ -263,6 +269,7 @@ public class Catalogo extends JDialog {
                                         }
 
                                     } else {
+                                        System.out.println("he entrado 2.0??");
                                         carro.get(posicionAuxCarro).setUnidades(carro.get(posicionAuxCarro).getUnidades() - 1);
                                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[1].setText(String.valueOf(carro.get(posicionAuxCarro).getUnidades()));
                                         alEtiquetas.get(carro.get(posicionAuxCarro).getFilaCarrito())[2].setText(String.valueOf(dameTruncado((carro.get(posicionAuxCarro).getUnidades() * carro.get(posicionAuxCarro).getPpu()))));
@@ -348,6 +355,7 @@ public class Catalogo extends JDialog {
     private void meteCarrito(String[] nuevoProducto) {
         Producto p = new Producto(Integer.parseInt(nuevoProducto[0]), nuevoProducto[1], 1, Double.valueOf(nuevoProducto[3]));
         carro.add(p);
+        System.out.println("He entrado al carrito:"+carro.get(carro.size()-1).getUnidades());
     }
 
     private void sacaCarrito(int i) {
@@ -359,6 +367,16 @@ public class Catalogo extends JDialog {
 
         for (int i = 0; i < carro.size(); i++) {
             if (Integer.parseInt(productoAux[0]) == carro.get(i).getId()) {
+                return i;
+            }
+        }
+        return -1;
+
+    }
+    private int encuentraProducto(String productoAux) {
+
+        for (int i = 0; i < carro.size(); i++) {
+            if (productoAux.equals(carro.get(i).getNombre())) {
                 return i;
             }
         }
